@@ -64,6 +64,8 @@ window.JF_I18N = {
     'modal.label': '보정 결과', 'modal.alt': '보정한 사진',
     'modal.text': '이 화면에서는 바로 내려받을 수 없어요. 결과를 길게 누르거나 마우스 오른쪽 버튼으로 눌러 저장하세요.',
     'modal.close': '닫기',
+    'm.more': '더보기', 'm.openNew': '다른 사진·영상 열기', 'm.compareSplit': '원본과 나란히 비교', 'm.points': '얼굴 인식 포인트 보기',
+    'm.auto': '자동', 'm.mask': '보정 영역', 'm.needFace': '얼굴이 인식되면 쓸 수 있어요', 'm.hold': '사진을 길게 누르면 원본이 보여요',
     'webgl.none': '이 브라우저에서는 WebGL을 쓸 수 없어요'
   },
 
@@ -131,6 +133,8 @@ window.JF_I18N = {
     'modal.label': 'Edited result', 'modal.alt': 'Edited photo',
     'modal.text': "Direct downloads aren't available here. Long-press or right-click the result to save it.",
     'modal.close': 'Close',
+    'm.more': 'More', 'm.openNew': 'Open another photo or video', 'm.compareSplit': 'Side-by-side compare', 'm.points': 'Show face points',
+    'm.auto': 'Auto', 'm.mask': 'Retouch area', 'm.needFace': 'Available once a face is detected', 'm.hold': 'Press and hold the photo to see the original',
     'webgl.none': "WebGL isn't available in this browser"
   },
 
@@ -198,6 +202,8 @@ window.JF_I18N = {
     'modal.label': '補正結果', 'modal.alt': '補正した写真',
     'modal.text': 'この画面では直接ダウンロードできません。結果を長押しするか右クリックして保存してください。',
     'modal.close': '閉じる',
+    'm.more': 'その他', 'm.openNew': '別の写真・動画を開く', 'm.compareSplit': '元の画像と並べて比較', 'm.points': '顔のポイントを表示',
+    'm.auto': '自動', 'm.mask': '補正範囲', 'm.needFace': '顔が検出されると使えます', 'm.hold': '写真を長押しすると元の画像が見られます',
     'webgl.none': 'このブラウザではWebGLを使えません'
   }
 };
