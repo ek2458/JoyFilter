@@ -224,6 +224,8 @@ input[type=range]:disabled{cursor:not-allowed}
   .btn{height:36px;padding:0 12px}
   .btn .t{display:none}
   .icon-btn{width:36px;padding:0;justify-content:center}
+  .lang-btn{padding:0 10px;gap:4px;font-family:var(--font-label);font-size:12px;font-weight:600;color:var(--lav-ink)}
+  .lang-btn svg{width:17px;height:17px}
   .stage-wrap{position:relative;gap:6px}
   .stage{border-radius:18px}
   .statusbar{position:absolute;top:8px;left:8px;right:8px;pointer-events:none;justify-content:center;min-height:0}
@@ -273,6 +275,7 @@ input[type=range]:disabled{cursor:not-allowed}
   .m-tab svg{width:21px;height:21px}
   .m-tab[aria-selected="true"]{color:var(--pink);font-weight:700}
 }
+@media (max-width: 420px){ .word{display:none} }
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -302,6 +305,9 @@ input[type=range]:disabled{cursor:not-allowed}
       </button>
       <button class="btn" id="resetBtn" type="button" title="모든 보정 초기화" data-i18n-title="hdr.resetTitle">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg><span class="t" data-i18n="hdr.reset">초기화</span>
+      </button>
+      <button class="btn m-only lang-btn" id="langBtn" type="button" aria-label="언어" data-i18n-aria="hdr.lang">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.8 5.8 3.8 9s-1.2 6.2-3.8 9c-2.6-2.8-3.8-5.8-3.8-9S9.4 5.8 12 3z"/></svg><span id="langCode">KO</span>
       </button>
       <button class="btn icon-btn m-only" id="moreBtn" type="button" aria-label="더보기" data-i18n-aria="m.more">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/></svg>
@@ -1110,7 +1116,7 @@ function fit(){
   const pad=r.width<500?12:28;
   const s=Math.min((r.width-pad*2)/W,(r.height-pad*2)/H);
   frame.style.width=Math.max(1,W*s)+'px'; frame.style.height=Math.max(1,H*s)+'px';
-  drawPoints();
+  drawPoints(); renderMediaLabels();
 }
 new ResizeObserver(fit).observe(stage);
 function setSplit(pct){
@@ -1375,6 +1381,7 @@ const sheet=$('sheet');
 function openSheet(){ sheet.hidden=false; }
 function closeSheet(){ sheet.hidden=true; }
 $('moreBtn').addEventListener('click',openSheet);
+$('langBtn').addEventListener('click',openSheet);
 $('sClose').addEventListener('click',closeSheet);
 sheet.addEventListener('click',e=>{ if(e.target===sheet) closeSheet(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !sheet.hidden) closeSheet(); });
@@ -1390,8 +1397,9 @@ function renderLegend(){
   $('legend').innerHTML=LEGEND.map(([c,,bg])=>`<span style="background:${bg}">${c} ${t('legend.'+c)}</span>`).join('');
 }
 function renderMediaLabels(){
-  if(mode==='photo'){ $('dims').textContent=t('dims.photo',{w:W,h:H}); $('saveLabel').textContent=t('save.photo'); }
-  else if(mode==='video'){ $('dims').textContent=t('dims.video',{w:W,h:H,d:fmt(video.duration)}); $('saveLabel').textContent=t('save.video'); }
+  const phone=matchMedia('(max-width: 860px)').matches;
+  if(mode==='photo'){ $('dims').textContent=t('dims.photo',{w:W,h:H}); $('saveLabel').textContent=phone?t('save.default'):t('save.photo'); }
+  else if(mode==='video'){ $('dims').textContent=t('dims.video',{w:W,h:H,d:fmt(video.duration)}); $('saveLabel').textContent=phone?t('save.default'):t('save.video'); }
   else $('saveLabel').textContent=t('save.default');
 }
 function applyLang(next){
@@ -1409,6 +1417,7 @@ function applyLang(next){
   playBtn.setAttribute('aria-label', video.paused?t('player.play'):t('player.pause'));
   if(exporting) $('exportText').textContent=t('export.progress',{p:exportPct});
   document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lang===lang));
+  $('langCode').textContent={ko:'KO',en:'EN',ja:'JA'}[lang];
   try{ localStorage.setItem('joyfilter-lang',lang); }catch(e){}
 }
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
