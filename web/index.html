@@ -1040,7 +1040,10 @@ const isNativeApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && 
 function blobToBase64(blob){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]); r.onerror=rej; r.readAsDataURL(blob); }); }
 async function saveNative(blob,filename){
   // iOS app: write to the app cache in chunks, then open the share sheet ("이미지 저장" / "동영상 저장")
-  const FS=window.Capacitor.registerPlugin('Filesystem'), Share=window.Capacitor.registerPlugin('Share');
+  const cap=window.Capacitor;
+  const call=(plugin,method,opts)=> cap.nativePromise ? cap.nativePromise(plugin,method,opts) : cap.Plugins[plugin][method](opts);
+  const FS={ writeFile:o=>call('Filesystem','writeFile',o), appendFile:o=>call('Filesystem','appendFile',o), getUri:o=>call('Filesystem','getUri',o) };
+  const Share={ share:o=>call('Share','share',o) };
   const CHUNK=3*1024*1024;
   for(let off=0; off<blob.size; off+=CHUNK){
     const data=await blobToBase64(blob.slice(off,off+CHUNK));
