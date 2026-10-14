@@ -13,15 +13,16 @@
 | --- | --- |
 | Apple Developer Program | 연간 유료 멤버십. [developer.apple.com/programs](https://developer.apple.com/programs/)에서 가입 |
 | Mac | Xcode 16 이상 설치 (App Store에서 무료) |
-| Node.js | 20 이상 |
+| Node.js | 22 이상 ([nodejs.org](https://nodejs.org)의 LTS 버전) |
 | iPhone | 실기기 테스트용 (권장) |
 | 웹 주소 | 개인정보 처리방침 URL. GitHub Pages의 `/privacy.html`을 그대로 써요 |
 
 ## 1. 프로젝트 열기
 
 ```bash
-git clone <이 저장소 주소>
-cd joyfilter
+node -v            # v22 이상인지 확인
+git clone https://github.com/ek2458/JoyFilter.git
+cd JoyFilter
 npm install
 npm run ios:sync
 npm run ios:open

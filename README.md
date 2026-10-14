@@ -46,7 +46,7 @@ python3 -m http.server 8080
 
 ## iOS 빌드
 
-Mac과 Xcode 16 이상이 필요해요.
+Mac, Xcode 16 이상, Node.js 22 이상이 필요해요.
 
 ```bash
 npm install
