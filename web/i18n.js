@@ -69,6 +69,8 @@ window.JF_I18N = {
     'load.import': '사진 보관함에서 가져오는 중', 'load.photo': '사진 여는 중', 'load.video': '영상 여는 중',
     'load.preparing': '얼굴 인식 준비 중', 'load.firstTime': '처음 한 번만 몇 초 걸려요', 'load.wait': '잠시만 기다려 주세요',
     'load.longVideo': '긴 영상은 조금 더 걸릴 수 있어요',
+    'close.label': '사진 닫기', 'close.titlePhoto': '편집 중인 사진을 닫을까요?', 'close.titleVideo': '편집 중인 영상을 닫을까요?',
+    'close.body': '지금까지 보정한 내용은 저장되지 않아요.', 'close.cancel': '취소', 'close.confirm': '닫기',
     'webgl.none': '이 브라우저에서는 WebGL을 쓸 수 없어요'
   },
 
@@ -141,6 +143,8 @@ window.JF_I18N = {
     'load.import': 'Getting it from your library', 'load.photo': 'Opening photo', 'load.video': 'Opening video',
     'load.preparing': 'Getting face detection ready', 'load.firstTime': 'This takes a few seconds the first time only', 'load.wait': 'Just a moment',
     'load.longVideo': 'Long videos can take a little longer',
+    'close.label': 'Close', 'close.titlePhoto': 'Close this photo?', 'close.titleVideo': 'Close this video?',
+    'close.body': "Your edits so far won't be saved.", 'close.cancel': 'Cancel', 'close.confirm': 'Close',
     'webgl.none': "WebGL isn't available in this browser"
   },
 
@@ -213,6 +217,8 @@ window.JF_I18N = {
     'load.import': 'ライブラリから読み込み中', 'load.photo': '写真を開いています', 'load.video': '動画を開いています',
     'load.preparing': '顔検出を準備中', 'load.firstTime': '初回だけ数秒かかります', 'load.wait': '少々お待ちください',
     'load.longVideo': '長い動画は少し時間がかかります',
+    'close.label': '閉じる', 'close.titlePhoto': '編集中の写真を閉じますか？', 'close.titleVideo': '編集中の動画を閉じますか？',
+    'close.body': 'ここまでの補正内容は保存されません。', 'close.cancel': 'キャンセル', 'close.confirm': '閉じる',
     'webgl.none': 'このブラウザではWebGLを使えません'
   }
 };
