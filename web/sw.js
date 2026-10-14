@@ -1,9 +1,11 @@
 // Offline cache for the web version. Bump VERSION when files change.
-const VERSION = 'joyfilter-v1';
+const VERSION = 'joyfilter-v2';
 const CORE = [
   './',
   'index.html',
   'manifest.webmanifest',
+  'i18n.js',
+  'privacy.html',
   'fonts/fonts.css',
   'vendor/face-api.js',
   'model/ssd_mobilenetv1_model-weights_manifest.json',
@@ -31,6 +33,17 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  // Pages and scripts: network first so updates show up; fall back to cache offline
+  const fresh = req.mode === 'navigate' || /\.(html|js|webmanifest)$/.test(new URL(req.url).pathname);
+  if (fresh) {
+    e.respondWith(
+      fetch(req).then((res) => {
+        if (res.ok) { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); }
+        return res;
+      }).catch(() => caches.match(req).then((hit) => hit || caches.match('index.html')))
+    );
+    return;
+  }
   e.respondWith(
     caches.match(req).then((hit) => hit || fetch(req).then((res) => {
       if (res.ok) { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); }

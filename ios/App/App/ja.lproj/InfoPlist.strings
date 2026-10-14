@@ -1,0 +1,5 @@
+"CFBundleDisplayName" = "JoyFilter";
+"NSPhotoLibraryUsageDescription" = "補正する写真や動画を選ぶために写真ライブラリにアクセスします。写真が端末の外に送られることはありません。";
+"NSPhotoLibraryAddUsageDescription" = "補正した写真や動画を写真ライブラリに保存するために必要です。";
+"NSCameraUsageDescription" = "撮影した写真や動画をすぐに補正できるようにカメラを使用します。撮影した内容が端末の外に送られることはありません。";
+"NSMicrophoneUsageDescription" = "動画を撮影するときに音声を録音するためにマイクを使用します。";

@@ -70,6 +70,13 @@ header{grid-column:1 / -1;display:flex;align-items:center;gap:12px;flex-wrap:wra
 .btn.soft{background:var(--lav-soft);border-color:transparent;color:var(--lav-ink);font-weight:700}
 .btn svg{width:16px;height:16px;flex:none}
 
+.lang{display:flex;gap:2px;padding:3px;background:var(--lav-soft);border-radius:999px}
+.lang button{border:0;background:none;height:32px;padding:0 11px;border-radius:999px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--lav-ink);white-space:nowrap}
+.lang button[aria-pressed="true"]{background:var(--card);color:var(--pink);font-weight:700;box-shadow:0 2px 6px -2px rgba(70,63,98,.2)}
+:root:lang(en){--font-head:"Fredoka", system-ui, sans-serif}
+:root:lang(ja){--font-head:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic UI","Noto Sans JP",system-ui,sans-serif;
+  --font-body:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo","Noto Sans JP",system-ui,sans-serif}
+
 /* Stage */
 .stage-wrap{display:flex;flex-direction:column;min-height:0;min-width:0;gap:10px}
 .stage{position:relative;flex:1;min-height:0;border-radius:var(--r-lg);overflow:hidden;display:flex;align-items:center;justify-content:center;
@@ -128,7 +135,7 @@ header{grid-column:1 / -1;display:flex;align-items:center;gap:12px;flex-wrap:wra
 /* Panel */
 .panel{display:flex;flex-direction:column;min-height:0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
 .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:14px 14px 0;padding:4px;background:var(--lav-soft);border-radius:999px}
-.tab{border:0;background:none;height:36px;border-radius:999px;cursor:pointer;color:var(--lav-ink);font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:5px}
+.tab{border:0;background:none;height:36px;white-space:nowrap;min-width:0;padding:0 4px;border-radius:999px;cursor:pointer;color:var(--lav-ink);font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:5px}
 .tab svg{width:14px;height:14px;flex:none}
 .tab[aria-selected="true"]{background:var(--card);color:var(--pink);font-weight:700;box-shadow:0 2px 6px -2px rgba(70,63,98,.2)}
 .pane{flex:1;min-height:0;overflow:auto;padding:18px 18px 22px;display:flex;flex-direction:column;gap:16px}
@@ -195,6 +202,10 @@ input[type=range]:disabled{cursor:not-allowed}
   .word h1{font-size:23px}
   .empty h2{font-size:25px}
   .bar{width:80px}
+  .brand{flex:1 1 100%;margin-right:0}
+  .lang button{padding:0 9px}
+  .tab{font-size:12.5px;gap:4px}
+  .tab svg{display:none}
 }
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -208,18 +219,23 @@ input[type=range]:disabled{cursor:not-allowed}
       <div class="mark" aria-hidden="true"><span>jf</span><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="#ef86a7"/></svg></div>
       <div class="word"><h1>Joy<em>Filter</em></h1><small>FACE · FILM · VIDEO</small></div>
     </div>
+    <div class="lang" role="group" aria-label="언어" data-i18n-aria="hdr.lang">
+      <button type="button" data-lang="ko" lang="ko" aria-pressed="true">한국어</button>
+      <button type="button" data-lang="en" lang="en" aria-pressed="false">English</button>
+      <button type="button" data-lang="ja" lang="ja" aria-pressed="false">日本語</button>
+    </div>
     <div class="tools">
-      <button class="btn" id="openBtn" type="button" title="사진 또는 영상 열기">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="t">열기</span>
+      <button class="btn" id="openBtn" type="button" title="사진 또는 영상 열기" data-i18n-title="hdr.openTitle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="t" data-i18n="hdr.open">열기</span>
       </button>
-      <button class="btn" id="cmpBtn" type="button" aria-pressed="false" disabled title="원본과 비교">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></svg><span class="t">비교</span>
+      <button class="btn" id="cmpBtn" type="button" aria-pressed="false" disabled title="원본과 비교" data-i18n-title="hdr.compareTitle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></svg><span class="t" data-i18n="hdr.compare">비교</span>
       </button>
-      <button class="btn" id="ptsBtn" type="button" aria-pressed="false" disabled title="얼굴 인식 포인트 보기">
-        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="9" r="1.6"/><circle cx="12" cy="6" r="1.6"/><circle cx="18" cy="9" r="1.6"/><circle cx="8" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg><span class="t">포인트</span>
+      <button class="btn" id="ptsBtn" type="button" aria-pressed="false" disabled title="얼굴 인식 포인트 보기" data-i18n-title="hdr.pointsTitle">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="9" r="1.6"/><circle cx="12" cy="6" r="1.6"/><circle cx="18" cy="9" r="1.6"/><circle cx="8" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg><span class="t" data-i18n="hdr.points">포인트</span>
       </button>
-      <button class="btn" id="resetBtn" type="button" title="모든 보정 초기화">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg><span class="t">초기화</span>
+      <button class="btn" id="resetBtn" type="button" title="모든 보정 초기화" data-i18n-title="hdr.resetTitle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg><span class="t" data-i18n="hdr.reset">초기화</span>
       </button>
       <button class="btn primary" id="saveBtn" type="button" disabled>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"/></svg><span id="saveLabel">저장</span>
@@ -233,20 +249,20 @@ input[type=range]:disabled{cursor:not-allowed}
       <div class="empty" id="empty">
         <div class="card">
           <span class="eyebrow">FACE &amp; FILM STUDIO</span>
-          <h2>오늘의 나를<br><em>조금 더 사랑스럽게</em></h2>
-          <p>인물 사진이나 영상을 끌어다 놓거나 붙여넣으세요. 얼굴을 자동으로 찾아 보정 포인트를 잡아요.</p>
+          <h2 data-i18n-html="empty.headline">오늘의 나를<br><em>조금 더 사랑스럽게</em></h2>
+          <p data-i18n="empty.body">인물 사진이나 영상을 끌어다 놓거나 붙여넣으세요. 얼굴을 자동으로 찾아 보정 포인트를 잡아요.</p>
           <div class="open-row">
-            <button class="btn primary" id="openPhoto" type="button">사진 열기</button>
-            <button class="btn soft" id="openVideo" type="button">영상 열기</button>
+            <button class="btn primary" id="openPhoto" type="button" data-i18n="empty.openPhoto">사진 열기</button>
+            <button class="btn soft" id="openVideo" type="button" data-i18n="empty.openVideo">영상 열기</button>
           </div>
           <div class="feats" aria-hidden="true">
-            <div class="feat"><i style="background:var(--lav-soft);color:var(--lav-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="9.5" cy="10.5" r=".6" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".6" fill="currentColor"/><path d="M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg></i><span>얼굴 인식</span></div>
-            <div class="feat"><i style="background:var(--pink-soft);color:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.5c3 4 5.5 7 5.5 10a5.5 5.5 0 0 1-11 0c0-3 2.5-6 5.5-10z"/></svg></i><span>피부 결</span></div>
-            <div class="feat"><i style="background:var(--lemon);color:#a77812"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></i><span>필름 필터</span></div>
-            <div class="feat"><i style="background:var(--mint);color:#3c8a57"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10.5l5-3v9l-5-3z"/></svg></i><span>영상 보정</span></div>
+            <div class="feat"><i style="background:var(--lav-soft);color:var(--lav-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="9.5" cy="10.5" r=".6" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".6" fill="currentColor"/><path d="M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg></i><span data-i18n="feat.face">얼굴 인식</span></div>
+            <div class="feat"><i style="background:var(--pink-soft);color:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.5c3 4 5.5 7 5.5 10a5.5 5.5 0 0 1-11 0c0-3 2.5-6 5.5-10z"/></svg></i><span data-i18n="feat.skin">피부 결</span></div>
+            <div class="feat"><i style="background:var(--lemon);color:#a77812"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></i><span data-i18n="feat.film">필름 필터</span></div>
+            <div class="feat"><i style="background:var(--mint);color:#3c8a57"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10.5l5-3v9l-5-3z"/></svg></i><span data-i18n="feat.video">영상 보정</span></div>
           </div>
         </div>
-        <p class="fine">사진과 영상은 이 기기 안에서만 처리되고 어디에도 업로드되지 않아요. <a href="privacy.html" style="color:var(--lav-ink)">개인정보 처리방침</a></p>
+        <p class="fine"><span data-i18n="empty.fine">사진과 영상은 이 기기 안에서만 처리되고 어디에도 업로드되지 않아요.</span> <a href="privacy.html" style="color:var(--lav-ink)" data-i18n="empty.privacy">개인정보 처리방침</a></p>
       </div>
       <div class="frame" id="frame">
         <canvas id="gl"></canvas>
@@ -259,7 +275,7 @@ input[type=range]:disabled{cursor:not-allowed}
         <div class="export-card" role="status">
           <strong id="exportText">영상 만드는 중 0%</strong>
           <div class="bar"><i id="exportBar"></i></div>
-          <button class="btn" id="cancelExport" type="button">취소</button>
+          <button class="btn" id="cancelExport" type="button" data-i18n="export.cancel">취소</button>
         </div>
       </div>
     </div>
@@ -267,7 +283,7 @@ input[type=range]:disabled{cursor:not-allowed}
       <button class="play" id="playBtn" type="button" aria-label="재생">
         <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>
       </button>
-      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치">
+      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치" data-i18n-aria="player.seek">
       <span class="time" id="time">0:00 / 0:00</span>
     </div>
     <div class="statusbar">
@@ -279,26 +295,26 @@ input[type=range]:disabled{cursor:not-allowed}
 
   <aside class="panel">
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-tab="face" id="tab-face"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.6-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4c0 5-7 9.6-7 9.6z"/></svg>얼굴</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="skin" id="tab-skin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5c3 4 5.5 7 5.5 10a5.5 5.5 0 0 1-11 0c0-3 2.5-6 5.5-10z"/></svg>피부</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="film" id="tab-film"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>필터</button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="adj" id="tab-adj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg>조정</button>
+      <button class="tab" role="tab" aria-selected="true" data-tab="face" id="tab-face"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.6-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4c0 5-7 9.6-7 9.6z"/></svg><span data-i18n="tab.face">얼굴</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="skin" id="tab-skin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5c3 4 5.5 7 5.5 10a5.5 5.5 0 0 1-11 0c0-3 2.5-6 5.5-10z"/></svg><span data-i18n="tab.skin">피부</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="film" id="tab-film"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><span data-i18n="tab.film">필터</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="adj" id="tab-adj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg><span data-i18n="tab.adj">조정</span></button>
     </div>
 
     <div class="pane" data-pane="face">
       <button class="btn primary auto" id="autoBtn" type="button">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>자연스럽게 자동 보정
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><span data-i18n="face.auto">자연스럽게 자동 보정</span>
       </button>
       <p class="note" id="faceNote">사진이나 영상을 열면 얼굴을 찾아 이 도구들이 켜져요.</p>
-      <div class="pane-head"><h3>FACE SHAPE</h3><button class="link" data-reset="face" type="button">얼굴 초기화</button></div>
+      <div class="pane-head"><h3>FACE SHAPE</h3><button class="link" data-reset="face" type="button" data-i18n="face.reset">얼굴 초기화</button></div>
       <div class="sliders" id="sl-face"></div>
     </div>
 
     <div class="pane" data-pane="skin" hidden>
-      <p class="note">피부 보정은 인식된 얼굴의 피부에만 적용돼요. 눈, 눈썹, 입술은 그대로 둬요.</p>
-      <div class="pane-head"><h3>SKIN CARE</h3><button class="link" data-reset="skin" type="button">피부 초기화</button></div>
+      <p class="note" data-i18n="skin.note">피부 보정은 인식된 얼굴의 피부에만 적용돼요. 눈, 눈썹, 입술은 그대로 둬요.</p>
+      <div class="pane-head"><h3>SKIN CARE</h3><button class="link" data-reset="skin" type="button" data-i18n="skin.reset">피부 초기화</button></div>
       <div class="sliders" id="sl-skin"></div>
-      <label class="toggle" for="maskToggle">보정 영역 보기
+      <label class="toggle" for="maskToggle"><span data-i18n="skin.mask">보정 영역 보기</span>
         <span class="switch"><input type="checkbox" id="maskToggle"><span></span></span>
       </label>
     </div>
@@ -306,7 +322,7 @@ input[type=range]:disabled{cursor:not-allowed}
     <div class="pane" data-pane="film" hidden>
       <div class="sliders">
         <div class="row" id="row-intensity">
-          <label for="intensity">필터 강도</label><output id="out-intensity">80</output>
+          <label for="intensity" data-i18n="film.intensity">필터 강도</label><output id="out-intensity">80</output>
           <input type="range" id="intensity" min="0" max="100" value="80">
         </div>
       </div>
@@ -316,17 +332,27 @@ input[type=range]:disabled{cursor:not-allowed}
     </div>
 
     <div class="pane" data-pane="adj" hidden>
-      <div class="pane-head"><h3>LIGHT &amp; COLOR</h3><button class="link" data-reset="adj" type="button">조정 초기화</button></div>
+      <div class="pane-head"><h3>LIGHT &amp; COLOR</h3><button class="link" data-reset="adj" type="button" data-i18n="adj.reset">조정 초기화</button></div>
       <div class="sliders" id="sl-adj"></div>
     </div>
   </aside>
 </div>
 <video id="video" playsinline preload="auto"></video>
 
+<script src="i18n.js"></script>
 <script src="vendor/face-api.js"></script>
 <script>
 (() => {
 "use strict";
+
+/* ---------- Language ---------- */
+let lang = window.jfDetectLang ? window.jfDetectLang() : 'ko';
+function t(key, vars){
+  const d = (window.JF_I18N && (window.JF_I18N[lang] || window.JF_I18N.ko)) || {};
+  let str = d[key] ?? (window.JF_I18N?.ko?.[key]) ?? key;
+  if(vars) for(const [k,v] of Object.entries(vars)) str = str.split('{'+k+'}').join(String(v));
+  return str;
+}
 
 /* ---------- Definitions ---------- */
 const SLIDERS = {
@@ -399,7 +425,7 @@ function buildSliders(group){
   for (const s of SLIDERS[group]){
     const id=`${group}-${s.k}`;
     const row=document.createElement('div'); row.className='row'; row.id='row-'+id;
-    row.innerHTML=`<label for="${id}">${s.label}</label><output id="out-${id}">0</output><input type="range" id="${id}" min="${s.min}" max="100" value="0" step="1">`;
+    row.innerHTML=`<label for="${id}" id="lbl-${id}">${t('sl.'+s.k)}</label><output id="out-${id}">0</output><input type="range" id="${id}" min="${s.min}" max="100" value="0" step="1">`;
     host.appendChild(row);
     const input=row.querySelector('input'), out=row.querySelector('output');
     const sync=()=>{ const v=+input.value; state[group][s.k]=v; out.textContent=(s.min<0&&v>0?'+':'')+v; row.classList.toggle('changed',v!==0); paintRange(input); };
@@ -426,7 +452,7 @@ $('maskToggle').addEventListener('change',e=>{ state.showMask=e.target.checked; 
 
 /* ---------- WebGL ---------- */
 const gl = glc.getContext('webgl',{preserveDrawingBuffer:true, premultipliedAlpha:false, antialias:false, alpha:false});
-if(!gl){ empty.querySelector('h2').textContent='이 브라우저에서는 WebGL을 쓸 수 없어요'; }
+if(!gl){ empty.querySelector('h2').removeAttribute('data-i18n-html'); empty.querySelector('h2').textContent=t('webgl.none'); }
 const MAX_OPS=48;
 const MAX_TEX = gl ? Math.min(2048, gl.getParameter(gl.MAX_TEXTURE_SIZE)) : 2048;
 const MAX_VIDEO = 1280;
@@ -678,14 +704,14 @@ const TW=120, TH=150;
 let thumbTex=null, thumbOutTex=null, thumbFbo=null;
 const thumbCanvases={};
 (function buildFilms(){
-  $('legend').innerHTML=LEGEND.map(([c,n,bg])=>`<span style="background:${bg}">${c} ${n}</span>`).join('');
+  renderLegend();
   const grid=$('films');
   for(const f of FILMS){
     const b=document.createElement('button'); b.type='button'; b.className='film'; b.id='film-'+f.id;
     b.setAttribute('aria-pressed', f.id===state.film);
     const c=document.createElement('canvas'); c.width=TW; c.height=TH; thumbCanvases[f.id]=c;
     const h=document.createElement('i'); h.className='heart'; h.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="#ef86a7"/></svg>';
-    const l=document.createElement('div'); l.className='lbl'; l.innerHTML=`<b>${f.id}</b><span>${f.name}</span>`;
+    const l=document.createElement('div'); l.className='lbl'; l.innerHTML=`<b>${f.id}</b><span class="fname" data-film="${f.id}">${t('filmname.'+f.id)}</span>`;
     b.append(c,h,l); grid.appendChild(b);
     b.addEventListener('click',()=>selectFilm(f.id));
   }
@@ -697,7 +723,7 @@ function selectFilm(id){
 }
 function updateFilmInfo(){
   const f=FILMS.find(x=>x.id===state.film);
-  $('filmInfo').textContent = f.id==='N0' ? 'N0 원본' : `${f.id} ${f.name} · ${state.intensity}%`;
+  $('filmInfo').textContent = f.id==='N0' ? `N0 ${t('filmname.N0')}` : `${f.id} ${t('filmname.'+f.id)} · ${state.intensity}%`;
 }
 function sampleScene(){
   const c=document.createElement('canvas'); c.width=TW; c.height=TH; const x=c.getContext('2d');
@@ -737,7 +763,8 @@ if(gl) renderThumbs(sampleScene());
 
 /* ---------- Face detection ---------- */
 const chip=$('modelChip');
-function setChip(text,cls){ chip.textContent=text; chip.className='chip dot '+cls; }
+let chipState={key:'chip.preparing',cls:'busy',vars:null};
+function setChip(key,cls,vars){ chipState={key,cls,vars}; chip.textContent=t(key,vars); chip.className='chip dot '+cls; }
 let backendReady=null, ssdReady=null, tinyReady=null;
 function initBackend(){
   if(backendReady) return backendReady;
@@ -751,7 +778,7 @@ function initBackend(){
 }
 function loadSsd(){ return ssdReady ||= initBackend().then(()=>faceapi.nets.ssdMobilenetv1.loadFromUri('model')); }
 function loadTiny(){ return tinyReady ||= initBackend().then(()=>faceapi.nets.tinyFaceDetector.loadFromUri('model')); }
-loadSsd().then(()=>{ if(!mode) setChip('얼굴 인식 준비됨','ok'); }).catch(err=>{ console.error(err); setChip('얼굴 인식을 불러오지 못했어요 · 필터와 조정은 사용 가능','err'); });
+loadSsd().then(()=>{ if(!mode) setChip('chip.ready','ok'); }).catch(err=>{ console.error(err); setChip('chip.loadFail','err'); });
 
 const detCanvas=document.createElement('canvas');
 function toDetCanvas(maxSide){
@@ -777,12 +804,12 @@ async function detectPhoto(){
   faces=[];
   try{
     await loadSsd();
-    setChip('얼굴 찾는 중','busy');
+    setChip('chip.finding','busy');
     const k=toDetCanvas(1024);
     const res=await faceapi.detectAllFaces(detCanvas,new faceapi.SsdMobilenetv1Options({minConfidence:0.35,maxResults:6})).withFaceLandmarks();
     faces=toFaces(res,k);
-    setChip(faces.length?`얼굴 ${faces.length}명 인식됨`:'얼굴을 찾지 못했어요 · 필터와 조정은 사용 가능', faces.length?'ok':'err');
-  }catch(err){ console.error(err); setChip('얼굴 인식을 쓸 수 없어요 · 필터와 조정은 사용 가능','err'); }
+    setChip(faces.length?'chip.found':'chip.notFound', faces.length?'ok':'err', {n:faces.length});
+  }catch(err){ console.error(err); setChip('chip.unavailable','err'); }
   afterFaces(); updateFaceUI(); schedule('warp');
   renderThumbs(thumbFromWork());
 }
@@ -800,7 +827,7 @@ async function detectVideoFrame(){
     const before=faces.length;
     if(next.length){ missCount=0; faces=smoothFaces(faces,next); }
     else if(++missCount>6){ faces=[]; }
-    if(faces.length!==before && !exporting) setChip(faces.length?`얼굴 ${faces.length}명 추적 중`:'지금 장면에서는 얼굴이 안 보여요 · 재생하면 계속 찾아요', faces.length?'ok':'busy');
+    if(faces.length!==before && !exporting) setChip(faces.length?'chip.tracking':'chip.noFaceScene', faces.length?'ok':'busy', {n:faces.length});
     afterFaces();
     if(video.paused&&!exporting) schedule('warp');
   }catch(err){ console.error(err); }
@@ -832,14 +859,14 @@ function updateFaceUI(){
   for(const g of ['face','skin']) for(const s of SLIDERS[g]){ $(`${g}-${s.k}`).disabled=!has; $(`row-${g}-${s.k}`).classList.toggle('off',!has); }
   $('autoBtn').disabled=!has; $('maskToggle').disabled=!has; $('ptsBtn').disabled=!has;
   $('faceNote').hidden=has;
-  if(!has) $('faceNote').textContent = mode ? '이 사진에서는 얼굴을 찾지 못했어요. 정면에 가깝고 얼굴이 잘 보이는 사진에서 가장 잘 작동해요.' : '사진이나 영상을 열면 얼굴을 찾아 이 도구들이 켜져요.';
+  if(!has) $('faceNote').textContent = mode ? t('face.noteNoFace') : t('face.noteEmpty');
 }
 updateFaceUI();
 
 $('autoBtn').addEventListener('click',()=>{
   for(const [k,v] of Object.entries(AUTO.face)) setSlider('face',k,v);
   for(const [k,v] of Object.entries(AUTO.skin)) setSlider('skin',k,v);
-  toast('자동 보정을 적용했어요. 슬라이더로 다듬어 보세요.');
+  toast(t('toast.auto'));
 });
 
 /* ---------- Opening media ---------- */
@@ -860,7 +887,7 @@ function loadFile(file){
   if(!file) return;
   if(file.type.startsWith('image/')) return openPhoto(file);
   if(file.type.startsWith('video/')) return openVideo(file);
-  toast('사진이나 영상 파일만 열 수 있어요.');
+  toast(t('toast.fileType'));
 }
 let photoURL=null, videoURL=null;
 function openPhoto(file){
@@ -874,12 +901,11 @@ function openPhoto(file){
     prepareSurface(im.naturalWidth,im.naturalHeight);
     workCtx.drawImage(im,0,0,W,H); updateTex(imgTex,work);
     origc.getContext('2d').drawImage(work,0,0);
-    $('dims').textContent=`사진 · ${W} × ${H}px`;
-    $('saveLabel').textContent='사진 저장';
+    renderMediaLabels();
     $('vbar').hidden=true;
     fit(); render(); updateFaceUI(); detectPhoto();
   };
-  im.onerror=()=>toast('이 이미지를 읽지 못했어요. JPG나 PNG로 다시 시도해 주세요.');
+  im.onerror=()=>toast(t('toast.imgRead'));
   im.src=photoURL;
 }
 function stopVideo(){
@@ -892,26 +918,25 @@ function openVideo(file){
   if(videoURL) URL.revokeObjectURL(videoURL);
   videoURL=URL.createObjectURL(file);
   video.src=videoURL; video.loop=true;
-  setChip('영상 불러오는 중','busy');
+  setChip('chip.loadingVideo','busy');
   video.onloadeddata=async()=>{
     video.onloadeddata=null;
     mode='video';
     prepareSurface(video.videoWidth,video.videoHeight);
-    $('dims').textContent=`영상 · ${W} × ${H}px · ${fmt(video.duration)}`;
-    $('saveLabel').textContent='영상 저장';
+    renderMediaLabels();
     $('vbar').hidden=false;
     fit(); updateFaceUI();
     try{ video.currentTime=Math.min(0.1,video.duration/2); await once(video,'seeked'); }catch(e){}
     pullFrame();
-    setChip('얼굴 찾는 중','busy');
+    setChip('chip.finding','busy');
     await detectVideoFrame();
-    setChip(faces.length?`얼굴 ${faces.length}명 추적 중`:'지금 장면에서는 얼굴이 안 보여요 · 재생하면 계속 찾아요', faces.length?'ok':'busy');
+    setChip(faces.length?'chip.tracking':'chip.noFaceScene', faces.length?'ok':'busy', {n:faces.length});
     renderThumbs(thumbFromWork());
     render(); updateTime();
     frameLoop(); trackLoop();
-    if(video.duration>180) toast('영상 저장은 영상 길이만큼 시간이 걸려요.');
+    if(video.duration>180) toast(t('toast.longVideo'));
   };
-  video.onerror=()=>{ setChip('이 영상 형식은 브라우저에서 열 수 없어요','err'); toast('MP4(H.264)나 WebM 영상으로 다시 시도해 주세요.'); };
+  video.onerror=()=>{ setChip('chip.videoFormat','err'); toast(t('toast.videoRetry')); };
 }
 function once(el,ev){ return new Promise(r=>el.addEventListener(ev,r,{once:true})); }
 function pullFrame(){
@@ -945,12 +970,12 @@ let seeking=false;
 playBtn.addEventListener('click',async()=>{
   if(mode!=='video'||exporting) return;
   ensureAudio();
-  if(video.paused){ try{ await video.play(); }catch(e){ toast('재생을 시작하지 못했어요. 다시 눌러 주세요.'); } }
+  if(video.paused){ try{ await video.play(); }catch(e){ toast(t('toast.playFail')); } }
   else video.pause();
 });
 video.addEventListener('timeupdate',updateTime);
-video.addEventListener('play',()=>{ $('playIcon').innerHTML=ICON_PAUSE; playBtn.setAttribute('aria-label','일시정지'); });
-video.addEventListener('pause',()=>{ $('playIcon').innerHTML=ICON_PLAY; playBtn.setAttribute('aria-label','재생'); });
+video.addEventListener('play',()=>{ $('playIcon').innerHTML=ICON_PAUSE; playBtn.setAttribute('aria-label',t('player.pause')); });
+video.addEventListener('pause',()=>{ $('playIcon').innerHTML=ICON_PLAY; playBtn.setAttribute('aria-label',t('player.play')); });
 video.addEventListener('seeked',async()=>{ if(mode!=='video'||exporting) return; pullFrame(); render(); updateTime(); if(video.paused){ await detectVideoFrame(); render(); } });
 seek.addEventListener('input',()=>{ seeking=true; paintRange(seek); if(mode==='video') video.currentTime=(+seek.value/1000)*(video.duration||0); });
 seek.addEventListener('change',()=>{ seeking=false; });
@@ -1054,11 +1079,11 @@ async function saveNative(blob,filename){
   await Share.share({files:[uri]});
 }
 async function offerFile(blob,filename,kind){
-  const done = kind==='video'?'영상을 저장했어요.':'사진을 저장했어요.';
+  const done = kind==='video'?t('toast.savedVideo'):t('toast.savedPhoto');
   const d=await getDownloads();
   if(d){
     try{ await d.save({filename,data:blob}); toast(done); return; }
-    catch(e){ if(e?.code==='declined') return; if(e?.code==='rate_limited'){ toast('저장 창이 이미 열려 있어요.'); return; } }
+    catch(e){ if(e?.code==='declined') return; if(e?.code==='rate_limited'){ toast(t('toast.saveOpen')); return; } }
   }
   if(isNativeApp){
     try{ await saveNative(blob,filename); return; }
@@ -1084,16 +1109,16 @@ $('saveBtn').addEventListener('click',async()=>{
   const wasMask=state.showMask; state.showMask=false; render();
   const blob=await new Promise(r=>glc.toBlob(r,'image/jpeg',0.93));
   state.showMask=wasMask; render();
-  if(!blob){ toast('이미지를 만들지 못했어요. 다시 시도해 주세요.'); return; }
+  if(!blob){ toast(t('toast.imgFail')); return; }
   offerFile(blob,`joyfilter-${today()}.jpg`,'photo');
 });
 
 let exporting=false, cancelRequested=false;
 async function exportVideo(){
-  if(typeof MediaRecorder==='undefined'||!glc.captureStream){ toast('이 브라우저는 영상 저장을 지원하지 않아요. 최신 Chrome이나 Safari에서 열어 주세요.'); return; }
+  if(typeof MediaRecorder==='undefined'||!glc.captureStream){ toast(t('toast.noRecorder')); return; }
   const types=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
   const mime=types.find(t=>MediaRecorder.isTypeSupported(t));
-  if(!mime){ toast('이 브라우저에서 쓸 수 있는 영상 형식이 없어요.'); return; }
+  if(!mime){ toast(t('toast.noFormat')); return; }
   ensureAudio();
   exporting=true; cancelRequested=false;
   const ui=$('exportUi'); ui.hidden=false; setExport(0);
@@ -1119,19 +1144,19 @@ async function exportVideo(){
   video.loop=wasLoop; exporting=false; ui.hidden=true;
   [playBtn,seek,$('saveBtn'),$('openBtn')].forEach(b=>b.disabled=false);
   render();
-  if(cancelRequested){ toast('영상 저장을 취소했어요.'); return; }
-  if(!chunks.length){ toast('영상을 만들지 못했어요. 다시 시도해 주세요.'); return; }
+  if(cancelRequested){ toast(t('toast.exportCancel')); return; }
+  if(!chunks.length){ toast(t('toast.exportFail')); return; }
   const blob=new Blob(chunks,{type:mime.split(';')[0]});
   offerFile(blob,`joyfilter-${today()}.${mime.includes('mp4')?'mp4':'webm'}`,'video');
 }
-function setExport(p){ const pct=Math.round(p*100); $('exportText').textContent=`영상 만드는 중 ${pct}%`; $('exportBar').style.width=pct+'%'; }
+function setExport(p){ const pct=Math.round(p*100); exportPct=pct; $('exportText').textContent=t('export.progress',{p:pct}); $('exportBar').style.width=pct+'%'; }
 $('cancelExport').addEventListener('click',()=>{ cancelRequested=true; });
 
 function showSaveModal(blob,kind){
   const url=URL.createObjectURL(blob);
   const m=document.createElement('div'); m.className='modal';
-  const media = kind==='video' ? `<video src="${url}" controls playsinline></video>` : `<img alt="보정한 사진" src="${url}">`;
-  m.innerHTML=`<div class="modal-card" role="dialog" aria-label="보정 결과">${media}<p>이 화면에서는 바로 내려받을 수 없어요. 결과를 길게 누르거나 마우스 오른쪽 버튼으로 눌러 저장하세요.</p><button class="btn" type="button">닫기</button></div>`;
+  const media = kind==='video' ? `<video src="${url}" controls playsinline></video>` : `<img alt="${t('modal.alt')}" src="${url}">`;
+  m.innerHTML=`<div class="modal-card" role="dialog" aria-label="${t('modal.label')}">${media}<p>${t('modal.text')}</p><button class="btn" type="button">${t('modal.close')}</button></div>`;
   const close=()=>{ m.remove(); URL.revokeObjectURL(url); };
   m.querySelector('button').onclick=close;
   m.addEventListener('click',e=>{ if(e.target===m) close(); });
@@ -1144,6 +1169,36 @@ function toast(msg){
   const t=document.createElement('div'); t.className='toast'; t.textContent=msg; t.setAttribute('role','status');
   document.body.appendChild(t); clearTimeout(toastT); toastT=setTimeout(()=>t.remove(),2800);
 }
+/* ---------- Language switching ---------- */
+let exportPct=0;
+function renderLegend(){
+  $('legend').innerHTML=LEGEND.map(([c,,bg])=>`<span style="background:${bg}">${c} ${t('legend.'+c)}</span>`).join('');
+}
+function renderMediaLabels(){
+  if(mode==='photo'){ $('dims').textContent=t('dims.photo',{w:W,h:H}); $('saveLabel').textContent=t('save.photo'); }
+  else if(mode==='video'){ $('dims').textContent=t('dims.video',{w:W,h:H,d:fmt(video.duration)}); $('saveLabel').textContent=t('save.video'); }
+  else $('saveLabel').textContent=t('save.default');
+}
+function applyLang(next){
+  if(next && window.JF_LANGS.includes(next)) lang=next;
+  document.documentElement.lang=lang;
+  document.querySelector('meta[name="description"]')?.setAttribute('content',t('meta.desc'));
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent=t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{ el.innerHTML=t(el.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{ el.title=t(el.dataset.i18nTitle); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{ el.setAttribute('aria-label',t(el.dataset.i18nAria)); });
+  for(const g of ['face','skin','adj']) for(const sl of SLIDERS[g]){ const l=$(`lbl-${g}-${sl.k}`); if(l) l.textContent=t('sl.'+sl.k); }
+  document.querySelectorAll('.fname').forEach(el=>{ el.textContent=t('filmname.'+el.dataset.film); });
+  renderLegend(); updateFilmInfo(); renderMediaLabels(); updateFaceUI();
+  chip.textContent=t(chipState.key,chipState.vars);
+  playBtn.setAttribute('aria-label', video.paused?t('player.play'):t('player.pause'));
+  if(exporting) $('exportText').textContent=t('export.progress',{p:exportPct});
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lang===lang));
+  try{ localStorage.setItem('joyfilter-lang',lang); }catch(e){}
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
+applyLang(lang);
+
 if('serviceWorker' in navigator && location.protocol==='https:' && !isNativeApp && !window.claude){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }

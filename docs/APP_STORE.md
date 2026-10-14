@@ -123,6 +123,79 @@ JoyFilter는 사진과 영상 속 얼굴을 자동으로 찾아 자연스럽게 
 **이름이 이미 쓰이고 있을 때 대안**
 `JoyFilter: 얼굴 보정 & 필름`, `JoyFilter 조이필터`, `JoyFilter Studio`
 
+### 영어, 일본어 스토어 페이지
+
+앱 화면과 권한 안내는 이미 세 언어를 지원해요. App Store Connect의 앱 버전 페이지 오른쪽 위 언어 메뉴에서
+**영어(미국)**, **일본어**를 추가하고 아래 문구를 붙여 넣으세요. 언어마다 스크린샷을 따로 올릴 수 있어요. 해당 언어로 바꾼 화면을 찍으면 좋아요.
+
+**English**
+
+- Subtitle: `Face retouch & film filters`
+- Promotional text: `No sign-in, no uploads. Retouch faces in photos and videos right on your device.`
+- Keywords: `retouch,face,selfie,beauty,filter,film,skin,smooth,slim,vline,eyes,video editor,photo editor,aesthetic`
+- Description:
+```
+JoyFilter finds faces in your photos and videos and retouches them naturally, then adds a film-style look.
+
+Face
+· Smaller face, slim face, V-line jaw, chin length
+· Eye size, slim nose, lip volume, lifted mouth corners
+· One-tap natural auto retouch
+
+Skin
+· Smooths skin texture while keeping facial contours
+· Brighten and add a rosy glow
+· Eyes, brows, and lips are left untouched
+
+Film filters
+· 13 filters across warm, cool, bright, film grain, and mono
+· Fine control over exposure, contrast, temperature, grain, and vignette
+
+Video
+· Tracks faces during playback and applies the same retouch
+· Saves your video with sound
+
+Privacy
+· No account or sign-in
+· Photos and videos are processed only on your device and never uploaded
+· No ads or tracking
+```
+
+**日本語**
+
+- サブタイトル: `顔補正とフィルムフィルター`
+- プロモーションテキスト: `ログインもアップロードも不要。写真や動画の顔を、端末の中で自然に補正。`
+- キーワード: `補正,顔補正,自撮り,美顔,フィルター,フィルム,エモい,肌補正,小顔,Vライン,目を大きく,動画編集,写真加工`
+- 説明:
+```
+JoyFilterは写真や動画の顔を自動で見つけて自然に補正し、フィルム風の雰囲気に仕上げる編集ツールです。
+
+顔の補正
+・小顔、輪郭スリム、Vライン、あごの長さ
+・目の大きさ、鼻スリム、唇のボリューム、口角アップ
+・ワンタップの「ナチュラル自動補正」
+
+肌の補正
+・輪郭を残したまま肌のキメだけを整えます
+・明るさと血色を調整
+・目、眉、唇はそのまま
+
+フィルムフィルター
+・ウォーム、クール、ブライト、フィルムグレイン、モノクロの13種類
+・露出、コントラスト、色温度、グレイン、ビネットまで細かく調整
+
+動画の補正
+・再生中に顔を追いかけて同じ補正をかけます
+・音声付きで動画を保存
+
+プライバシー
+・会員登録もログインもありません
+・写真と動画は端末の中だけで処理され、アップロードされません
+・広告やトラッキングはありません
+```
+
+개인정보 처리방침 페이지도 세 언어를 지원해서 같은 주소를 그대로 쓰면 돼요. 방문자의 언어에 맞춰 열리고, 위쪽에서 바꿀 수 있어요.
+
 ### 스크린샷
 
 iPhone 전용으로 설정해 두었기 때문에 iPhone 스크린샷만 필요해요.

@@ -15,18 +15,21 @@
 | 필터 | W(웜) C(쿨) B(브라이트) F(필름 그레인) M(모노) 계열 13종, 강도 조절 |
 | 조정 | 노출, 대비, 채도, 색온도, 틴트, 하이라이트, 섀도우, 페이드, 선명도, 그레인, 비네팅 |
 | 영상 | 재생 중 얼굴 추적, 같은 보정 적용, 소리 포함 MP4/WebM 저장 |
+| 언어 | 한국어, English, 日本語. 상단에서 선택하고, 처음에는 기기 언어를 따라가요 |
 
 ## 폴더 구성
 
 ```
 web/                 앱 본체 (정적 파일, 빌드 단계 없음)
   index.html         화면과 보정 엔진 (WebGL 셰이더)
+  i18n.js            한국어, 영어, 일본어 문구
   vendor/face-api.js 얼굴 인식 라이브러리 (@vladmandic/face-api 1.7.14, MIT)
   model/             얼굴 인식 모델 가중치
   fonts/             Jua, Fredoka, Poppins (SIL OFL)
   privacy.html       개인정보 처리방침 (App Store 제출용 URL)
   sw.js              웹 버전 오프라인 캐시
 ios/                 Capacitor 8 iOS 프로젝트 (Swift Package Manager)
+  App/*.lproj/       권한 안내 문구 현지화 (ko, en, ja)
 capacitor.config.json
 .github/workflows/pages.yml   web/ 폴더를 GitHub Pages에 배포
 ```
@@ -58,3 +61,8 @@ npm run ios:open    # Xcode 열기
 - face-api: MIT License, Vladimir Mandic (`web/vendor/face-api.LICENSE`)
 - Jua, Fredoka, Poppins: SIL Open Font License 1.1
 - Capacitor: MIT License, Ionic
+
+## 문구 추가와 수정
+
+화면의 모든 문구는 `web/i18n.js`에 언어별로 있어요. 같은 키를 세 언어에 모두 넣어야 해요.
+iOS 권한 안내 문구는 `ios/App/App/<언어>.lproj/InfoPlist.strings`에 있어요.

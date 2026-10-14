@@ -1,0 +1,5 @@
+"CFBundleDisplayName" = "JoyFilter";
+"NSPhotoLibraryUsageDescription" = "JoyFilter accesses your photo library so you can choose photos and videos to edit. Nothing leaves your device.";
+"NSPhotoLibraryAddUsageDescription" = "JoyFilter needs permission to save your edited photos and videos to your photo library.";
+"NSCameraUsageDescription" = "JoyFilter uses the camera so you can edit a photo or video right after taking it. Nothing you capture leaves your device.";
+"NSMicrophoneUsageDescription" = "JoyFilter uses the microphone to record sound when you capture a video.";
