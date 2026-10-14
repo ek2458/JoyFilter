@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="description" content="JoyFilter: 사진과 영상 속 얼굴을 기기 안에서 보정하고 필름 감성 필터를 입히는 편집 도구. 업로드도 로그인도 없어요.">
+<meta name="theme-color" content="#fbf6f3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="JoyFilter">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>JoyFilter</title>
+
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+/* Layout: pastel studio — photo/video stage on a soft lavender card at left, a white tool card at right; stacks on phones.
+   Deliberately one light look, taken from the user's pastel brand references. */
+:root{
+  color-scheme: light;
+  --bg:#fbf6f3;
+  --card:#ffffff;
+  --ink:#463f62;
+  --muted:#8b85a3;
+  --line:#efe7ec;
+  --lav:#8e93d1;
+  --lav-ink:#6a6eb6;
+  --lav-soft:#ebe8f8;
+  --pink:#d45e88;
+  --pink-mid:#ef86a7;
+  --pink-soft:#fce4ee;
+  --lemon:#fff1b8;
+  --mint:#d6f3df;
+  --sky:#dcebfd;
+  --font-display:"Fredoka", "Jua", system-ui, sans-serif;
+  --font-head:"Jua", "Fredoka", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --font-body:-apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  --font-label:"Poppins", -apple-system, "Apple SD Gothic Neo", system-ui, sans-serif;
+  --r-lg:22px; --r:14px;
+  --shadow:0 1px 2px rgba(70,63,98,.05), 0 8px 24px -12px rgba(70,63,98,.18);
+}
+html,body{height:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;-webkit-tap-highlight-color:transparent;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--pink-mid);outline-offset:2px}
+
+.app{height:100%;display:grid;grid-template-columns:minmax(0,1fr) 360px;grid-template-rows:auto minmax(0,1fr);gap:14px 18px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:14px 18px}
+
+/* Header */
+header{grid-column:1 / -1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0}
+.mark{width:40px;height:40px;border-radius:12px;background:var(--lav);display:grid;place-items:center;position:relative;flex:none}
+.mark span{font-family:var(--font-display);font-weight:600;color:#fff;font-size:19px;letter-spacing:-.02em;line-height:1}
+.mark svg{position:absolute;top:5px;right:5px;width:9px;height:9px}
+.word{display:flex;flex-direction:column;line-height:1}
+.word h1{margin:0;font-family:var(--font-display);font-weight:600;font-size:26px;letter-spacing:-.015em;color:var(--lav)}
+.word h1 em{font-style:normal;color:var(--pink-mid)}
+.word small{font-family:var(--font-label);font-weight:600;font-size:9.5px;letter-spacing:.24em;color:var(--pink-mid);margin-top:4px}
+.tools{display:flex;gap:7px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-size:13px;font-weight:500;white-space:nowrap;color:var(--ink);transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--lav)}
+.btn[aria-pressed="true"]{background:var(--lav-soft);border-color:var(--lav);color:var(--lav-ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#fff;font-weight:700}
+.btn.primary:hover{background:#c8517c}
+.btn.soft{background:var(--lav-soft);border-color:transparent;color:var(--lav-ink);font-weight:700}
+.btn svg{width:16px;height:16px;flex:none}
+
+/* Stage */
+.stage-wrap{display:flex;flex-direction:column;min-height:0;min-width:0;gap:10px}
+.stage{position:relative;flex:1;min-height:0;border-radius:var(--r-lg);overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background-color:var(--lav-soft);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 27.5c-.3 0-4.6-2.9-4.6-5.8 0-1.4 1.1-2.5 2.4-2.5.9 0 1.7.5 2.2 1.2.5-.7 1.3-1.2 2.2-1.2 1.3 0 2.4 1.1 2.4 2.5 0 2.9-4.3 5.8-4.6 5.8z' fill='%23d9d4f2'/%3E%3C/svg%3E")}
+.frame{position:relative;display:none;touch-action:none;border-radius:10px;overflow:hidden;box-shadow:0 12px 32px -14px rgba(70,63,98,.45)}
+.frame.on{display:block}
+.frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#orig{clip-path:inset(0 50% 0 0);display:none}
+#pts{pointer-events:none}
+.frame.compare #orig{display:block}
+.divider{position:absolute;top:0;bottom:0;left:50%;width:0;display:none;pointer-events:none}
+.frame.compare .divider{display:block}
+.divider::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;background:#fff}
+.divider b{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#fff;color:var(--pink);display:grid;place-items:center;box-shadow:var(--shadow)}
+.divider b svg{width:16px;height:16px}
+.tag{position:absolute;top:10px;font-family:var(--font-label);font-weight:600;font-size:10px;letter-spacing:.14em;background:rgba(255,255,255,.85);color:var(--ink);padding:4px 9px;border-radius:999px;display:none}
+.frame.compare .tag{display:block}
+.tag.l{left:10px}.tag.r{right:10px;color:var(--pink)}
+
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:24px;width:min(520px,100%)}
+.empty .card{width:100%;background:var(--card);border-radius:var(--r-lg);padding:30px 24px 26px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:var(--shadow);border:2px dashed transparent;transition:border-color .15s}
+.stage.drag .empty .card{border-color:var(--pink-mid)}
+.eyebrow{font-family:var(--font-label);font-weight:600;font-size:10.5px;letter-spacing:.22em;color:var(--pink-mid)}
+.empty h2{font-family:var(--font-head);font-weight:400;font-size:30px;line-height:1.2;margin:0;color:var(--lav);text-wrap:balance}
+.empty h2 em{font-style:normal;color:var(--pink-mid)}
+.empty p{margin:0;color:var(--muted);max-width:38ch}
+.empty .fine{font-size:12px;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;margin-top:4px}
+.feat{display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--font-label);font-size:9.5px;font-weight:600;letter-spacing:.08em;color:var(--ink)}
+.feat i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.feat i svg{width:20px;height:20px}
+.feat span{font-family:var(--font-body);font-size:11.5px;font-weight:500;letter-spacing:0}
+.open-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+/* Video bar */
+.vbar{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:999px;padding:6px 8px 6px 6px;box-shadow:var(--shadow)}
+.play{width:36px;height:36px;border-radius:50%;border:0;background:var(--lav);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none}
+.play svg{width:16px;height:16px}
+.time{font-family:var(--font-label);font-size:11.5px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.vbar input[type=range]{flex:1;min-width:0}
+.export{position:absolute;inset:auto 0 16px 0;display:flex;justify-content:center;pointer-events:none}
+.export-card{pointer-events:auto;background:var(--card);border-radius:999px;padding:8px 8px 8px 18px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.export-card strong{font-weight:700;font-size:13px;white-space:nowrap}
+.bar{width:140px;height:6px;border-radius:3px;background:var(--lav-soft);overflow:hidden;flex:none}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lav),var(--pink-mid))}
+
+.statusbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;min-height:24px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:3px 11px;border-radius:999px;background:var(--card);color:var(--ink);font-variant-numeric:tabular-nums}
+.chip.dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.chip.ok{background:var(--mint)} .chip.ok::before{background:#47a466}
+.chip.busy{background:var(--lemon)} .chip.busy::before{background:#d29a1e;animation:pulse 1s ease-in-out infinite}
+.chip.err{background:var(--pink-soft)} .chip.err::before{background:var(--pink)}
+@keyframes pulse{50%{opacity:.3}}
+
+/* Panel */
+.panel{display:flex;flex-direction:column;min-height:0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:14px 14px 0;padding:4px;background:var(--lav-soft);border-radius:999px}
+.tab{border:0;background:none;height:36px;border-radius:999px;cursor:pointer;color:var(--lav-ink);font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:5px}
+.tab svg{width:14px;height:14px;flex:none}
+.tab[aria-selected="true"]{background:var(--card);color:var(--pink);font-weight:700;box-shadow:0 2px 6px -2px rgba(70,63,98,.2)}
+.pane{flex:1;min-height:0;overflow:auto;padding:18px 18px 22px;display:flex;flex-direction:column;gap:16px}
+.pane-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pane-head h3{margin:0;font-family:var(--font-label);font-size:10.5px;letter-spacing:.2em;font-weight:600;color:var(--lav-ink)}
+.link{background:none;border:0;color:var(--muted);font-size:12px;cursor:pointer;padding:2px 4px;text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--pink)}
+.note{font-size:12.5px;color:var(--ink);background:var(--lav-soft);border-radius:var(--r);padding:11px 13px;margin:0}
+.auto{width:100%;justify-content:center;height:44px}
+
+.sliders{display:flex;flex-direction:column;gap:13px}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center}
+.row label{font-size:13px;font-weight:500}
+.row output{font-family:var(--font-label);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:4ch;text-align:right}
+.row.changed output{color:var(--pink);font-weight:600}
+.row input{grid-column:1 / -1}
+.row.off{opacity:.4}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;margin:0;cursor:pointer;--a:0%;--b:0%}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--lav-soft) var(--a),var(--pink-mid) var(--a),var(--pink-mid) var(--b),var(--lav-soft) var(--b))}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--lav-soft) var(--a),var(--pink-mid) var(--a),var(--pink-mid) var(--b),var(--lav-soft) var(--b))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:2.5px solid var(--pink-mid);margin-top:-6px;box-shadow:0 2px 6px -1px rgba(70,63,98,.3)}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:#fff;border:2.5px solid var(--pink-mid)}
+input[type=range]:disabled{cursor:not-allowed}
+
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:500}
+.switch{position:relative;width:40px;height:22px;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.switch span{position:absolute;inset:0;border-radius:11px;background:var(--lav-soft);transition:background .15s;pointer-events:none}
+.switch span::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(70,63,98,.3);transition:transform .15s}
+.switch input:checked + span{background:var(--pink-mid)}
+.switch input:checked + span::after{transform:translateX(18px)}
+.switch input:focus-visible + span{outline:2px solid var(--pink-mid);outline-offset:2px}
+
+.films{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 10px}
+.film{background:none;border:0;padding:0;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.film canvas{width:100%;aspect-ratio:4/5;max-width:100%;border-radius:var(--r);display:block;outline:2.5px solid transparent;outline-offset:2px;background:var(--lav-soft)}
+.film[aria-pressed="true"] canvas{outline-color:var(--pink-mid)}
+.film .heart{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:#fff;display:none;place-items:center}
+.film .heart svg{width:11px;height:11px}
+.film[aria-pressed="true"] .heart{display:grid}
+.film .lbl{display:flex;gap:6px;align-items:baseline;min-width:0;padding-left:2px}
+.film b{font-family:var(--font-label);font-weight:600;font-size:10.5px;color:var(--lav-ink);letter-spacing:.04em}
+.film span{font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.legend{display:flex;flex-wrap:wrap;gap:6px}
+.legend span{font-size:11px;font-weight:500;padding:2px 9px;border-radius:999px}
+
+.modal{position:fixed;inset:0;background:rgba(70,63,98,.45);display:flex;align-items:center;justify-content:center;padding:max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));z-index:10}
+.modal-card{background:var(--card);border-radius:var(--r-lg);padding:18px;max-width:min(560px,100%);max-height:100%;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.modal-card img,.modal-card video{max-height:60vh;max-width:100%;object-fit:contain;border-radius:12px;min-height:0}
+.modal-card p{margin:0;color:var(--muted);font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px;z-index:11;max-width:calc(100% - 32px);text-align:center}
+
+#video{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+@media (max-width: 860px){
+  html,body{height:auto}
+  .app{height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto}
+  .stage{height:min(60vh,560px);flex:none}
+  .stage.has-media{height:auto;aspect-ratio:var(--ar);max-height:70vh;min-height:220px;width:100%}
+  .pane{overflow:visible}
+  .films{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:88px;overflow-x:auto;padding:4px 2px 6px}
+  .btn .t{display:none}
+  .btn{padding:0 12px}
+  .word h1{font-size:23px}
+  .empty h2{font-size:25px}
+  .bar{width:80px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><span>jf</span><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="#ef86a7"/></svg></div>
+      <div class="word"><h1>Joy<em>Filter</em></h1><small>FACE · FILM · VIDEO</small></div>
+    </div>
+    <div class="tools">
+      <button class="btn" id="openBtn" type="button" title="사진 또는 영상 열기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="t">열기</span>
+      </button>
+      <button class="btn" id="cmpBtn" type="button" aria-pressed="false" disabled title="원본과 비교">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></svg><span class="t">비교</span>
+      </button>
+      <button class="btn" id="ptsBtn" type="button" aria-pressed="false" disabled title="얼굴 인식 포인트 보기">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="9" r="1.6"/><circle cx="12" cy="6" r="1.6"/><circle cx="18" cy="9" r="1.6"/><circle cx="8" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg><span class="t">포인트</span>
+      </button>
+      <button class="btn" id="resetBtn" type="button" title="모든 보정 초기화">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg><span class="t">초기화</span>
+      </button>
+      <button class="btn primary" id="saveBtn" type="button" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"/></svg><span id="saveLabel">저장</span>
+      </button>
+      <input type="file" id="file" accept="image/*,video/*" hidden>
+    </div>
+  </header>
+
+  <section class="stage-wrap">
+    <div class="stage" id="stage">
+      <div class="empty" id="empty">
+        <div class="card">
+          <span class="eyebrow">FACE &amp; FILM STUDIO</span>
+          <h2>오늘의 나를<br><em>조금 더 사랑스럽게</em></h2>
+          <p>인물 사진이나 영상을 끌어다 놓거나 붙여넣으세요. 얼굴을 자동으로 찾아 보정 포인트를 잡아요.</p>
+          <div class="open-row">
+            <button class="btn primary" id="openPhoto" type="button">사진 열기</button>
+            <button class="btn soft" id="openVideo" type="button">영상 열기</button>
+          </div>
+          <div class="feats" aria-hidden="true">
+            <div class="feat"><i style="background:var(--lav-soft);color:var(--lav-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="9.5" cy="10.5" r=".6" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".6" fill="currentColor"/><path d="M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg></i><span>얼굴 인식</span></div>
+            <div class="feat"><i style="background:var(--pink-soft);color:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.5c3 4 5.5 7 5.5 10a5.5 5.5 0 0 1-11 0c0-3 2.5-6 5.5-10z"/></svg></i><span>피부 결</span></div>
+            <div class="feat"><i style="background:var(--lemon);color:#a77812"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></i><span>필름 필터</span></div>
+            <div class="feat"><i style="background:var(--mint);color:#3c8a57"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10.5l5-3v9l-5-3z"/></svg></i><span>영상 보정</span></div>
+          </div>
+        </div>
+        <p class="fine">사진과 영상은 이 기기 안에서만 처리되고 어디에도 업로드되지 않아요. <a href="privacy.html" style="color:var(--lav-ink)">개인정보 처리방침</a></p>
+      </div>
+      <div class="frame" id="frame">
+        <canvas id="gl"></canvas>
+        <canvas id="orig"></canvas>
+        <canvas id="pts"></canvas>
+        <span class="tag l">BEFORE</span><span class="tag r">AFTER</span>
+        <div class="divider" id="divider"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg></b></div>
+      </div>
+      <div class="export" id="exportUi" hidden>
+        <div class="export-card" role="status">
+          <strong id="exportText">영상 만드는 중 0%</strong>
+          <div class="bar"><i id="exportBar"></i></div>
+          <button class="btn" id="cancelExport" type="button">취소</button>
+        </div>
+      </div>
+    </div>
+    <div class="vbar" id="vbar" hidden>
+      <button class="play" id="playBtn" type="button" aria-label="재생">
+        <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+      </button>
+      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치">
+      <span class="time" id="time">0:00 / 0:00</span>
+    </div>
+    <div class="statusbar">
+      <span class="chip dot busy" id="modelChip">얼굴 인식 준비 중</span>
+      <span class="chip" id="dims" hidden></span>
+      <span class="chip" id="filmInfo">N0 원본</span>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="face" id="tab-face"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.6-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4c0 5-7 9.6-7 9.6z"/></svg>얼굴</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="skin" id="tab-skin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5c3 4 5.5 7 5.5 10a5.5 5.5 0 0 1-11 0c0-3 2.5-6 5.5-10z"/></svg>피부</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="film" id="tab-film"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>필터</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="adj" id="tab-adj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg>조정</button>
+    </div>
+
+    <div class="pane" data-pane="face">
+      <button class="btn primary auto" id="autoBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>자연스럽게 자동 보정
+      </button>
+      <p class="note" id="faceNote">사진이나 영상을 열면 얼굴을 찾아 이 도구들이 켜져요.</p>
+      <div class="pane-head"><h3>FACE SHAPE</h3><button class="link" data-reset="face" type="button">얼굴 초기화</button></div>
+      <div class="sliders" id="sl-face"></div>
+    </div>
+
+    <div class="pane" data-pane="skin" hidden>
+      <p class="note">피부 보정은 인식된 얼굴의 피부에만 적용돼요. 눈, 눈썹, 입술은 그대로 둬요.</p>
+      <div class="pane-head"><h3>SKIN CARE</h3><button class="link" data-reset="skin" type="button">피부 초기화</button></div>
+      <div class="sliders" id="sl-skin"></div>
+      <label class="toggle" for="maskToggle">보정 영역 보기
+        <span class="switch"><input type="checkbox" id="maskToggle"><span></span></span>
+      </label>
+    </div>
+
+    <div class="pane" data-pane="film" hidden>
+      <div class="sliders">
+        <div class="row" id="row-intensity">
+          <label for="intensity">필터 강도</label><output id="out-intensity">80</output>
+          <input type="range" id="intensity" min="0" max="100" value="80">
+        </div>
+      </div>
+      <div class="pane-head"><h3>FILM PALETTE</h3></div>
+      <div class="legend" id="legend"></div>
+      <div class="films" id="films"></div>
+    </div>
+
+    <div class="pane" data-pane="adj" hidden>
+      <div class="pane-head"><h3>LIGHT &amp; COLOR</h3><button class="link" data-reset="adj" type="button">조정 초기화</button></div>
+      <div class="sliders" id="sl-adj"></div>
+    </div>
+  </aside>
+</div>
+<video id="video" playsinline preload="auto"></video>
+
+<script src="vendor/face-api.js"></script>
+<script>
+(() => {
+"use strict";
+
+/* ---------- Definitions ---------- */
+const SLIDERS = {
+  face: [
+    {k:'small', label:'작은 얼굴', min:0},
+    {k:'slim',  label:'얼굴 갸름', min:0},
+    {k:'vline', label:'V라인 턱', min:0},
+    {k:'chin',  label:'턱 길이', min:-100},
+    {k:'eye',   label:'눈 크기', min:-100},
+    {k:'nose',  label:'코 슬림', min:0},
+    {k:'lips',  label:'입술 볼륨', min:-100},
+    {k:'smile', label:'입꼬리 올리기', min:0},
+  ],
+  skin: [
+    {k:'smooth', label:'피부 결 정돈', min:0},
+    {k:'bright', label:'화사하게', min:0},
+    {k:'rosy',   label:'혈색', min:0},
+  ],
+  adj: [
+    {k:'exposure', label:'노출', min:-100},
+    {k:'contrast', label:'대비', min:-100},
+    {k:'saturation', label:'채도', min:-100},
+    {k:'temp', label:'색온도', min:-100},
+    {k:'tint', label:'틴트', min:-100},
+    {k:'highlights', label:'하이라이트', min:-100},
+    {k:'shadows', label:'섀도우', min:-100},
+    {k:'fade', label:'페이드', min:0},
+    {k:'sharpen', label:'선명도', min:0},
+    {k:'grain', label:'그레인', min:0},
+    {k:'vignette', label:'비네팅', min:0},
+  ]
+};
+const AUTO = {face:{small:12,slim:24,vline:18,eye:16,nose:14,smile:12}, skin:{smooth:45,bright:22,rosy:12}};
+
+const Z = {exp:0,con:0,sat:0,temp:0,tint:0,fade:0,hi:0,sh:0,mono:0,grain:0,vig:0,ss:[.5,.5,.5,0],sh2:[.5,.5,.5,0]};
+const P = (id,name,o) => Object.assign({id,name}, Z, o);
+const FILMS = [
+  P('N0','원본',{}),
+  P('W1','한옥',{temp:.32,fade:.32,con:-.05,sat:-.12,sh2:[.64,.53,.40,.26],ss:[.45,.42,.53,.14],grain:.22}),
+  P('W2','피치',{exp:.10,temp:.18,tint:.26,sat:-.05,fade:.18,sh2:[.64,.48,.48,.30],hi:-.10}),
+  P('W3','선데이',{temp:.48,con:.10,sat:.08,ss:[.49,.44,.37,.22],vig:.30,grain:.18}),
+  P('W4','노을',{temp:.18,tint:.30,con:.14,ss:[.45,.40,.60,.34],sh2:[.66,.50,.40,.28],fade:.14,sat:-.05}),
+  P('C1','미스트',{exp:.05,temp:-.24,fade:.45,con:-.15,sat:-.24,ss:[.42,.50,.56,.30]}),
+  P('C2','하버',{temp:-.14,con:.20,sat:.05,ss:[.36,.52,.57,.44],sh2:[.63,.54,.44,.30]}),
+  P('C3','파인',{tint:-.22,temp:-.10,sat:-.15,fade:.25,ss:[.40,.55,.46,.36],grain:.30}),
+  P('B1','밀크',{exp:.22,con:-.20,sat:-.18,fade:.30,hi:-.22,sh:.30,temp:.05}),
+  P('B2','린넨',{exp:.14,con:-.08,sat:-.30,fade:.20,temp:.10,sh2:[.58,.55,.50,.20],sh:.18}),
+  P('F4','필름 400',{con:.10,sat:.05,fade:.20,temp:.10,grain:.62,vig:.25,ss:[.44,.48,.53,.20]}),
+  P('F8','필름 800',{con:.18,sat:-.06,fade:.12,tint:-.06,grain:.9,vig:.35,ss:[.40,.50,.52,.26],sh2:[.63,.52,.42,.18]}),
+  P('M1','잉크',{mono:1,con:.36,grain:.34,vig:.22}),
+  P('M2','애쉬',{mono:1,con:-.10,fade:.40,grain:.24,sh2:[.57,.52,.47,.22]}),
+];
+const LEGEND=[['W','웜','var(--pink-soft)'],['C','쿨','var(--sky)'],['B','브라이트','var(--lemon)'],['F','필름 그레인','var(--mint)'],['M','모노','var(--lav-soft)']];
+
+const state = { face:{}, skin:{}, adj:{}, film:'N0', intensity:80, showMask:false, showPts:false, compare:false, split:50 };
+for (const g of ['face','skin','adj']) for (const s of SLIDERS[g]) state[g][s.k]=0;
+
+/* ---------- DOM helpers ---------- */
+const $ = id => document.getElementById(id);
+const stage=$('stage'), frame=$('frame'), glc=$('gl'), origc=$('orig'), ptsc=$('pts'), empty=$('empty'), video=$('video');
+
+function paintRange(input){
+  const min=+input.min, max=+input.max, v=+input.value;
+  const pos=(v-min)/(max-min)*100, zero=min<0?50:0;
+  input.style.setProperty('--a', Math.min(pos,zero)+'%');
+  input.style.setProperty('--b', Math.max(pos,zero)+'%');
+}
+function buildSliders(group){
+  const host=$('sl-'+group); host.innerHTML='';
+  for (const s of SLIDERS[group]){
+    const id=`${group}-${s.k}`;
+    const row=document.createElement('div'); row.className='row'; row.id='row-'+id;
+    row.innerHTML=`<label for="${id}">${s.label}</label><output id="out-${id}">0</output><input type="range" id="${id}" min="${s.min}" max="100" value="0" step="1">`;
+    host.appendChild(row);
+    const input=row.querySelector('input'), out=row.querySelector('output');
+    const sync=()=>{ const v=+input.value; state[group][s.k]=v; out.textContent=(s.min<0&&v>0?'+':'')+v; row.classList.toggle('changed',v!==0); paintRange(input); };
+    input.addEventListener('input',()=>{ sync(); schedule(group==='face'?'warp':'final'); });
+    input.addEventListener('dblclick',()=>{ input.value=0; sync(); schedule(group==='face'?'warp':'final'); });
+    paintRange(input);
+  }
+}
+function setSlider(group,k,v){ const input=$(`${group}-${k}`); if(!input) return; input.value=v; input.dispatchEvent(new Event('input')); }
+['face','skin','adj'].forEach(buildSliders);
+document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>{ const g=b.dataset.reset; for(const s of SLIDERS[g]) setSlider(g,s.k,0); }));
+
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
+  document.querySelectorAll('.pane').forEach(p=>p.hidden = p.dataset.pane!==t.dataset.tab);
+  try{ localStorage.setItem('joyfilter-tab', t.dataset.tab);}catch(e){}
+}));
+try{ const saved=localStorage.getItem('joyfilter-tab'); if(saved) document.querySelector(`.tab[data-tab="${saved}"]`)?.click(); }catch(e){}
+
+const intensity=$('intensity');
+intensity.addEventListener('input',()=>{ state.intensity=+intensity.value; $('out-intensity').textContent=state.intensity; paintRange(intensity); updateFilmInfo(); schedule('final'); });
+paintRange(intensity);
+$('maskToggle').addEventListener('change',e=>{ state.showMask=e.target.checked; schedule('final'); });
+
+/* ---------- WebGL ---------- */
+const gl = glc.getContext('webgl',{preserveDrawingBuffer:true, premultipliedAlpha:false, antialias:false, alpha:false});
+if(!gl){ empty.querySelector('h2').textContent='이 브라우저에서는 WebGL을 쓸 수 없어요'; }
+const MAX_OPS=48;
+const MAX_TEX = gl ? Math.min(2048, gl.getParameter(gl.MAX_TEXTURE_SIZE)) : 2048;
+const MAX_VIDEO = 1280;
+
+const VS=`attribute vec2 aPos; void main(){ gl_Position=vec4(aPos,0.0,1.0); }`;
+const WARP_FS=`precision highp float;
+uniform sampler2D uImg; uniform sampler2D uMask; uniform vec2 uSize; uniform int uCount;
+uniform vec4 uA[${MAX_OPS}]; uniform vec4 uB[${MAX_OPS}];
+void main(){
+  vec2 q = gl_FragCoord.xy;
+  for(int i=0;i<${MAX_OPS};i++){
+    if(i>=uCount) break;
+    vec4 a=uA[i]; vec4 b=uB[i];
+    vec2 dv=q-a.xy; float r2=dot(dv,dv)/(a.z*a.z);
+    if(r2<1.0){
+      float w=1.0-r2; w*=w;
+      if(a.w<0.5){ q-=w*b.xy; }
+      else { q=a.xy+dv*(1.0-b.z*w); }
+    }
+  }
+  vec2 uv=q/uSize;
+  gl_FragColor=vec4(texture2D(uImg,uv).rgb, texture2D(uMask,uv).r);
+}`;
+const FINAL_FS=`precision highp float;
+uniform sampler2D uTex; uniform vec2 uSize; uniform vec2 uOut; uniform float uFlip;
+uniform float uSmooth; uniform float uBright; uniform float uRosy; uniform float uSharpen; uniform float uRadius; uniform float uShowMask;
+uniform vec4 uP1; uniform vec4 uP2; uniform vec4 uP3; uniform vec4 uSS; uniform vec4 uSH;
+float luma(vec3 c){ return dot(c,vec3(0.2126,0.7152,0.0722)); }
+float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+void main(){
+  vec2 uv=gl_FragCoord.xy/uOut; if(uFlip>0.5) uv.y=1.0-uv.y;
+  vec4 c4=texture2D(uTex,uv); vec3 c=c4.rgb;
+  float cb=0.5-0.168736*c.r-0.331264*c.g+0.5*c.b;
+  float cr=0.5+0.5*c.r-0.418688*c.g-0.081312*c.b;
+  float sk=smoothstep(0.50,0.54,cr)*(1.0-smoothstep(0.66,0.71,cr))*smoothstep(0.27,0.32,cb)*(1.0-smoothstep(0.50,0.54,cb));
+  float mm=c4.a*(0.35+0.65*sk);
+  vec3 col=c;
+  vec2 px=1.0/uSize;
+  if(uSmooth>0.001){
+    vec3 acc=c; float wsum=1.0;
+    for(int ring=1; ring<=3; ring++){
+      float rr=uRadius*float(ring)/3.0; float ws=exp(-float(ring*ring)/4.5);
+      float off=(ring==2)?0.5:0.0;
+      for(int k=0;k<12;k++){
+        float an=(float(k)+off)*0.5235988;
+        vec3 s=texture2D(uTex,uv+vec2(cos(an),sin(an))*rr*px).rgb;
+        vec3 d=s-c; float wr=exp(-dot(d,d)/0.03);
+        acc+=s*ws*wr; wsum+=ws*wr;
+      }
+    }
+    col=mix(c,acc/wsum,clamp(uSmooth*mm,0.0,1.0));
+  }
+  if(uSharpen>0.001){
+    vec3 b4=(texture2D(uTex,uv+vec2(px.x,0.0)).rgb+texture2D(uTex,uv-vec2(px.x,0.0)).rgb+texture2D(uTex,uv+vec2(0.0,px.y)).rgb+texture2D(uTex,uv-vec2(0.0,px.y)).rgb)*0.25;
+    col+=(c-b4)*uSharpen*2.2*(1.0-mm*0.85);
+  }
+  col=mix(col,1.0-(1.0-col)*(1.0-col*0.38),uBright*mm);
+  col=mix(col,col*vec3(1.05,0.955,0.965)+vec3(0.018,0.0,0.01),uRosy*mm);
+  col=mix(col,vec3(0.94,0.53,0.66),mm*0.55*uShowMask);
+
+  col*=exp2(uP1.x);
+  col.r+=uP1.w*0.07; col.b-=uP1.w*0.07;
+  col.g-=uP2.x*0.05; col.r+=uP2.x*0.015; col.b+=uP2.x*0.02;
+  float L=clamp(luma(col),0.0,1.0);
+  col+=uP2.w*0.22*(1.0-L)*(1.0-L);
+  col+=uP2.z*0.22*L*L;
+  col=(col-0.5)*(1.0+uP1.y*0.6)+0.5;
+  L=clamp(luma(col),0.0,1.0);
+  col=mix(vec3(L),col,1.0+uP1.z);
+  col+=(uSS.rgb-0.5)*uSS.a*(1.0-L)*0.8;
+  col+=(uSH.rgb-0.5)*uSH.a*L*0.8;
+  float Lm=dot(col,vec3(0.30,0.59,0.11));
+  col=mix(col,vec3(Lm),uP3.x);
+  col=col*(1.0-uP2.y*0.22)+uP2.y*0.11;
+  vec2 vd=(gl_FragCoord.xy/uOut-0.5)*1.414;
+  col*=1.0-uP3.z*0.55*smoothstep(0.35,0.98,length(vd));
+  vec2 g=floor(gl_FragCoord.xy/uP3.w);
+  float n=hash(g)+hash(g+17.31)-1.0;
+  col+=n*uP3.y*0.09*(0.6+0.4*(1.0-L));
+  gl_FragColor=vec4(clamp(col,0.0,1.0),1.0);
+}`;
+
+function compile(type,src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+function program(fs){
+  const p=gl.createProgram(); gl.attachShader(p,compile(gl.VERTEX_SHADER,VS)); gl.attachShader(p,compile(gl.FRAGMENT_SHADER,fs));
+  gl.bindAttribLocation(p,0,'aPos'); gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  const u={}; const n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);
+  for(let i=0;i<n;i++){ const info=gl.getActiveUniform(p,i); const name=info.name.replace(/\[0\]$/,''); u[name]=gl.getUniformLocation(p,name); }
+  return {p,u};
+}
+function tex(w,h,src){
+  const t=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,t);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  if(src) gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);
+  else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+  return t;
+}
+function updateTex(t,src){ gl.bindTexture(gl.TEXTURE_2D,t); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src); }
+function fbo(t){ const f=gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER,f); gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0); gl.bindFramebuffer(gl.FRAMEBUFFER,null); return f; }
+
+let warpProg, finalProg;
+if(gl){
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+  warpProg=program(WARP_FS); finalProg=program(FINAL_FS);
+  const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1, 3,-1, -1,3]),gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+}
+
+/* ---------- Media state ---------- */
+let mode=null;                 // 'photo' | 'video'
+let W=0,H=0, imgTex=null, maskTex=null, warpTex=null, warpFbo=null;
+let faces=[];                  // [{pts:[{x,y} x68], box}]
+let skinRadius=4;
+const work=document.createElement('canvas');
+const workCtx=work.getContext('2d',{willReadFrequently:false});
+
+/* ---------- Params ---------- */
+const NO_ADJ={exposure:0,contrast:0,saturation:0,temp:0,tint:0,highlights:0,shadows:0,fade:0,grain:0,vignette:0,sharpen:0};
+function filmParams(id,k,withAdj){
+  const f=FILMS.find(x=>x.id===id)||FILMS[0];
+  const a=withAdj?state.adj:NO_ADJ;
+  return {
+    p1:[f.exp*k+a.exposure/100, f.con*k+a.contrast/100, f.sat*k+a.saturation/100, f.temp*k+a.temp/100],
+    p2:[f.tint*k+a.tint/100, Math.max(0,f.fade*k+a.fade/100), f.hi*k+a.highlights/100, f.sh*k+a.shadows/100],
+    p3:[f.mono*k, Math.max(0,f.grain*k+a.grain/100), Math.max(0,f.vig*k+a.vignette/100)],
+    ss:[f.ss[0],f.ss[1],f.ss[2],f.ss[3]*k], sh:[f.sh2[0],f.sh2[1],f.sh2[2],f.sh2[3]*k],
+    sharpen:a.sharpen/100
+  };
+}
+
+/* ---------- Geometry ---------- */
+const v2=(x,y)=>({x,y});
+const sub=(a,b)=>v2(a.x-b.x,a.y-b.y), add=(a,b)=>v2(a.x+b.x,a.y+b.y), mul=(a,s)=>v2(a.x*s,a.y*s);
+const len=a=>Math.hypot(a.x,a.y), norm=a=>{const l=len(a)||1; return v2(a.x/l,a.y/l);};
+const dist=(a,b)=>len(sub(a,b));
+const mean=arr=>mul(arr.reduce((s,p)=>add(s,p),v2(0,0)),1/arr.length);
+
+function faceOps(){
+  const ops=[], F=state.face;
+  const T=(c,R,d)=>{ if(len(d)>0.05) ops.push([c.x,c.y,R,0, d.x,d.y,0,0]); };
+  const S=(c,R,s)=>{ if(Math.abs(s)>0.002) ops.push([c.x,c.y,R,1, 0,0,s,0]); };
+  for(const f of faces){
+    const P=f.pts;
+    const faceW=dist(P[0],P[16]), faceH=dist(P[27],P[8]);
+    const up=norm(sub(P[27],P[8])), axisO=P[27];
+    const toAxis=pt=>{ const r=sub(pt,axisO); const t=r.x*up.x+r.y*up.y; return norm(sub(add(axisO,mul(up,t)),pt)); };
+    const slimW={2:.55,3:.8,4:1,5:1,6:.8,7:.45,9:.45,10:.8,11:1,12:1,13:.8,14:.55};
+    const vW={5:.55,6:1,7:.75,9:.75,10:1,11:.55};
+    const s=F.slim/100, vl=F.vline/100;
+    if(s>0||vl>0){
+      for(const i of [2,3,4,5,6,7,9,10,11,12,13,14]){
+        const mag=s*faceW*0.045*(slimW[i]||0)+vl*faceW*0.042*(vW[i]||0);
+        T(P[i], faceW*0.21, add(mul(toAxis(P[i]),mag), mul(up,(vW[i]||0)*vl*faceH*0.012)));
+      }
+    }
+    if(F.chin) T(P[8], faceW*0.3, mul(up,-F.chin/100*faceH*0.075));
+    if(F.eye) for(const [a,b] of [[36,42],[42,48]]) S(mean(P.slice(a,b)), dist(P[a],P[a+3])*1.3, F.eye/100*0.24);
+    if(F.nose){
+      const n=F.nose/100, nw=dist(P[31],P[35]);
+      T(P[31], nw*0.55, mul(norm(sub(P[33],P[31])), n*nw*0.11));
+      T(P[35], nw*0.55, mul(norm(sub(P[33],P[35])), n*nw*0.11));
+      S(mean([P[30],P[33]]), nw*0.95, -n*0.13);
+    }
+    const mw=dist(P[48],P[54]);
+    if(F.lips) S(mean(P.slice(48,60)), mw*0.72, F.lips/100*0.17);
+    if(F.smile){
+      const m=F.smile/100, side=norm(sub(P[54],P[48]));
+      T(P[48], mw*0.33, add(mul(up,m*mw*0.07), mul(side,-m*mw*0.02)));
+      T(P[54], mw*0.33, add(mul(up,m*mw*0.07), mul(side, m*mw*0.02)));
+    }
+    if(F.small) S(mean([P[27],P[8]]), faceH*1.2, -F.small/100*0.11);
+  }
+  return ops.slice(0,MAX_OPS);
+}
+
+/* ---------- Skin mask (canvases reused for video) ---------- */
+const maskTmp=document.createElement('canvas'), maskOut=document.createElement('canvas');
+function buildMask(){
+  const sc=Math.min(1, 512/Math.max(W,H));
+  const mw=Math.max(1,Math.round(W*sc)), mh=Math.max(1,Math.round(H*sc));
+  if(maskTmp.width!==mw||maskTmp.height!==mh){ maskTmp.width=maskOut.width=mw; maskTmp.height=maskOut.height=mh; }
+  const t=maskTmp.getContext('2d');
+  t.fillStyle='#000'; t.fillRect(0,0,mw,mh);
+  let blur=2;
+  for(const f of faces){
+    const P=f.pts.map(p=>v2(p.x*sc,p.y*sc));
+    const faceH=dist(P[27],P[8]), faceW=dist(P[0],P[16]);
+    const up=norm(sub(P[27],P[8]));
+    blur=Math.max(blur, faceW*0.035);
+    t.fillStyle='#fff'; t.beginPath();
+    for(let i=0;i<=16;i++){ const p=P[i]; i?t.lineTo(p.x,p.y):t.moveTo(p.x,p.y); }
+    for(let i=26;i>=17;i--){ const tt=(26-i)/9; const p=add(P[i],mul(up,faceH*(0.22+0.14*Math.sin(Math.PI*tt)))); t.lineTo(p.x,p.y); }
+    t.closePath(); t.fill();
+    t.fillStyle='#000';
+    const hole=(idx,scale)=>{ const pts=idx.map(i=>P[i]); const c=mean(pts); t.beginPath(); pts.forEach((p,j)=>{ const q=add(c,mul(sub(p,c),scale)); j?t.lineTo(q.x,q.y):t.moveTo(q.x,q.y); }); t.closePath(); t.fill(); };
+    hole([36,37,38,39,40,41],1.7); hole([42,43,44,45,46,47],1.7);
+    hole([48,49,50,51,52,53,54,55,56,57,58,59],1.12);
+    t.strokeStyle='#000'; t.lineCap='round'; t.lineJoin='round'; t.lineWidth=faceH*0.07;
+    for(const [a,b] of [[17,22],[22,27]]){ t.beginPath(); for(let i=a;i<b;i++){ i===a?t.moveTo(P[i].x,P[i].y):t.lineTo(P[i].x,P[i].y);} t.stroke(); }
+  }
+  const o=maskOut.getContext('2d');
+  o.fillStyle='#000'; o.fillRect(0,0,mw,mh);
+  o.filter=`blur(${blur.toFixed(1)}px)`; o.drawImage(maskTmp,0,0); o.filter='none';
+  if(!maskTex) maskTex=tex(0,0,maskOut); else updateTex(maskTex,maskOut);
+}
+
+/* ---------- Render ---------- */
+let pending=null, needWarp=true;
+function schedule(kind){ if(kind==='warp') needWarp=true; if(pending) return; pending=requestAnimationFrame(()=>{ pending=null; render(); }); }
+function drawTri(){ gl.drawArrays(gl.TRIANGLES,0,3); }
+const opsA=new Float32Array(MAX_OPS*4), opsB=new Float32Array(MAX_OPS*4);
+function runWarp(){
+  const ops=faceOps(); opsA.fill(0); opsB.fill(0);
+  ops.forEach((o,i)=>{ opsA.set(o.slice(0,4),i*4); opsB.set(o.slice(4,8),i*4); });
+  gl.bindFramebuffer(gl.FRAMEBUFFER,warpFbo); gl.viewport(0,0,W,H);
+  gl.useProgram(warpProg.p);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,imgTex); gl.uniform1i(warpProg.u.uImg,0);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,maskTex); gl.uniform1i(warpProg.u.uMask,1);
+  gl.uniform2f(warpProg.u.uSize,W,H); gl.uniform1i(warpProg.u.uCount,ops.length);
+  gl.uniform4fv(warpProg.u.uA,opsA); gl.uniform4fv(warpProg.u.uB,opsB);
+  drawTri();
+}
+function runFinal(srcTex,sw,sh,ow,oh,target,fp,skin,flip){
+  gl.bindFramebuffer(gl.FRAMEBUFFER,target); gl.viewport(0,0,ow,oh);
+  const u=finalProg.u; gl.useProgram(finalProg.p);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,srcTex); gl.uniform1i(u.uTex,0);
+  gl.uniform2f(u.uSize,sw,sh); gl.uniform2f(u.uOut,ow,oh); gl.uniform1f(u.uFlip,flip?1:0);
+  gl.uniform1f(u.uSmooth,skin.smooth); gl.uniform1f(u.uBright,skin.bright); gl.uniform1f(u.uRosy,skin.rosy);
+  gl.uniform1f(u.uSharpen,fp.sharpen); gl.uniform1f(u.uRadius,skin.radius); gl.uniform1f(u.uShowMask,skin.showMask);
+  gl.uniform4fv(u.uP1,fp.p1); gl.uniform4fv(u.uP2,fp.p2);
+  gl.uniform4f(u.uP3,fp.p3[0],fp.p3[1],fp.p3[2],Math.max(1,oh/1300));
+  gl.uniform4fv(u.uSS,fp.ss); gl.uniform4fv(u.uSH,fp.sh);
+  drawTri();
+}
+function render(){
+  if(!gl||!imgTex) return;
+  if(needWarp){ runWarp(); needWarp=false; }
+  const fp=filmParams(state.film, state.intensity/100, true);
+  const skin={smooth:state.skin.smooth/100, bright:state.skin.bright/100, rosy:state.skin.rosy/100, radius:skinRadius, showMask:(state.showMask&&!exporting)?1:0};
+  runFinal(warpTex,W,H,W,H,null,fp,skin,true);
+}
+
+/* ---------- Filter thumbnails ---------- */
+const TW=120, TH=150;
+let thumbTex=null, thumbOutTex=null, thumbFbo=null;
+const thumbCanvases={};
+(function buildFilms(){
+  $('legend').innerHTML=LEGEND.map(([c,n,bg])=>`<span style="background:${bg}">${c} ${n}</span>`).join('');
+  const grid=$('films');
+  for(const f of FILMS){
+    const b=document.createElement('button'); b.type='button'; b.className='film'; b.id='film-'+f.id;
+    b.setAttribute('aria-pressed', f.id===state.film);
+    const c=document.createElement('canvas'); c.width=TW; c.height=TH; thumbCanvases[f.id]=c;
+    const h=document.createElement('i'); h.className='heart'; h.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="#ef86a7"/></svg>';
+    const l=document.createElement('div'); l.className='lbl'; l.innerHTML=`<b>${f.id}</b><span>${f.name}</span>`;
+    b.append(c,h,l); grid.appendChild(b);
+    b.addEventListener('click',()=>selectFilm(f.id));
+  }
+})();
+function selectFilm(id){
+  state.film=id;
+  document.querySelectorAll('.film').forEach(b=>b.setAttribute('aria-pressed', b.id==='film-'+id));
+  updateFilmInfo(); schedule('final');
+}
+function updateFilmInfo(){
+  const f=FILMS.find(x=>x.id===state.film);
+  $('filmInfo').textContent = f.id==='N0' ? 'N0 원본' : `${f.id} ${f.name} · ${state.intensity}%`;
+}
+function sampleScene(){
+  const c=document.createElement('canvas'); c.width=TW; c.height=TH; const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,TH); g.addColorStop(0,'#c9c3ee'); g.addColorStop(.6,'#f7d6e4'); g.addColorStop(1,'#fbeee0');
+  x.fillStyle=g; x.fillRect(0,0,TW,TH);
+  x.fillStyle='#fff6e6'; x.beginPath(); x.arc(TW*.72,TH*.3,14,0,Math.PI*2); x.fill();
+  x.fillStyle='#e9b49a'; x.beginPath(); x.ellipse(TW*.45,TH*.62,26,32,0,0,Math.PI*2); x.fill();
+  x.fillStyle='#5b4a52'; x.beginPath(); x.ellipse(TW*.45,TH*.53,29,22,0,Math.PI,0); x.fill();
+  x.fillStyle='#8e93d1'; x.beginPath(); x.ellipse(TW*.45,TH*1.02,48,30,0,Math.PI,0); x.fill();
+  x.fillStyle='#d97b95'; x.beginPath(); x.ellipse(TW*.45,TH*.72,7,3,0,0,Math.PI*2); x.fill();
+  return c;
+}
+function renderThumbs(src){
+  if(!gl) return;
+  if(!thumbOutTex){ thumbOutTex=tex(TW,TH,null); thumbFbo=fbo(thumbOutTex); }
+  if(!thumbTex) thumbTex=tex(0,0,src); else updateTex(thumbTex,src);
+  const px=new Uint8Array(TW*TH*4);
+  const noSkin={smooth:0,bright:0,rosy:0,radius:1,showMask:0};
+  for(const f of FILMS){
+    runFinal(thumbTex,TW,TH,TW,TH,thumbFbo,filmParams(f.id,1,false),noSkin,false);
+    gl.readPixels(0,0,TW,TH,gl.RGBA,gl.UNSIGNED_BYTE,px);
+    thumbCanvases[f.id].getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(px),TW,TH),0,0);
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  if(imgTex){ needWarp=true; render(); }
+}
+function thumbFromWork(){
+  const c=document.createElement('canvas'); c.width=TW; c.height=TH; const x=c.getContext('2d');
+  const ar=TW/TH; let cx=W/2, cy=H/2, cw, ch;
+  if(faces[0]){ const b=faces[0].box; cx=b.x+b.width/2; cy=b.y+b.height*0.55; ch=Math.min(H,b.height*2.4); cw=ch*ar; if(cw>W){cw=W; ch=cw/ar;} }
+  else if(W/H>ar){ ch=H; cw=H*ar; } else { cw=W; ch=W/ar; }
+  const sx=Math.max(0,Math.min(W-cw,cx-cw/2)), sy=Math.max(0,Math.min(H-ch,cy-ch/2));
+  x.drawImage(work,sx,sy,cw,ch,0,0,TW,TH);
+  return c;
+}
+if(gl) renderThumbs(sampleScene());
+
+/* ---------- Face detection ---------- */
+const chip=$('modelChip');
+function setChip(text,cls){ chip.textContent=text; chip.className='chip dot '+cls; }
+let backendReady=null, ssdReady=null, tinyReady=null;
+function initBackend(){
+  if(backendReady) return backendReady;
+  backendReady=(async()=>{
+    if(typeof faceapi==='undefined') throw new Error('face-api missing');
+    let ok=false; try{ ok=await faceapi.tf.setBackend('webgl'); }catch(e){ ok=false; }
+    if(!ok) await faceapi.tf.setBackend('cpu');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('model');
+  })();
+  return backendReady;
+}
+function loadSsd(){ return ssdReady ||= initBackend().then(()=>faceapi.nets.ssdMobilenetv1.loadFromUri('model')); }
+function loadTiny(){ return tinyReady ||= initBackend().then(()=>faceapi.nets.tinyFaceDetector.loadFromUri('model')); }
+loadSsd().then(()=>{ if(!mode) setChip('얼굴 인식 준비됨','ok'); }).catch(err=>{ console.error(err); setChip('얼굴 인식을 불러오지 못했어요 · 필터와 조정은 사용 가능','err'); });
+
+const detCanvas=document.createElement('canvas');
+function toDetCanvas(maxSide){
+  const ds=Math.min(1,maxSide/Math.max(W,H));
+  const dw=Math.round(W*ds), dh=Math.round(H*ds);
+  if(detCanvas.width!==dw||detCanvas.height!==dh){ detCanvas.width=dw; detCanvas.height=dh; }
+  detCanvas.getContext('2d').drawImage(work,0,0,dw,dh);
+  return 1/ds;
+}
+function toFaces(res,k){
+  return res.sort((a,b)=>b.detection.box.area-a.detection.box.area).slice(0,2).map(r=>({
+    pts:r.landmarks.positions.map(p=>v2(p.x*k,p.y*k)),
+    box:{x:r.detection.box.x*k,y:r.detection.box.y*k,width:r.detection.box.width*k,height:r.detection.box.height*k}
+  }));
+}
+function afterFaces(){
+  skinRadius = faces.length ? Math.max(2, Math.min(26, Math.max(...faces.map(f=>dist(f.pts[0],f.pts[16])))*0.03)) : 4;
+  buildMask(); needWarp=true;
+  if(state.showPts) drawPoints();
+}
+
+async function detectPhoto(){
+  faces=[];
+  try{
+    await loadSsd();
+    setChip('얼굴 찾는 중','busy');
+    const k=toDetCanvas(1024);
+    const res=await faceapi.detectAllFaces(detCanvas,new faceapi.SsdMobilenetv1Options({minConfidence:0.35,maxResults:6})).withFaceLandmarks();
+    faces=toFaces(res,k);
+    setChip(faces.length?`얼굴 ${faces.length}명 인식됨`:'얼굴을 찾지 못했어요 · 필터와 조정은 사용 가능', faces.length?'ok':'err');
+  }catch(err){ console.error(err); setChip('얼굴 인식을 쓸 수 없어요 · 필터와 조정은 사용 가능','err'); }
+  afterFaces(); updateFaceUI(); schedule('warp');
+  renderThumbs(thumbFromWork());
+}
+
+/* Video tracking: fast detector + landmark smoothing between frames */
+let detBusy=false, missCount=0;
+async function detectVideoFrame(){
+  if(detBusy||mode!=='video') return;
+  detBusy=true;
+  try{
+    await loadTiny();
+    const k=toDetCanvas(640);
+    const res=await faceapi.detectAllFaces(detCanvas,new faceapi.TinyFaceDetectorOptions({inputSize:416,scoreThreshold:0.4})).withFaceLandmarks();
+    const next=toFaces(res,k);
+    const before=faces.length;
+    if(next.length){ missCount=0; faces=smoothFaces(faces,next); }
+    else if(++missCount>6){ faces=[]; }
+    if(faces.length!==before && !exporting) setChip(faces.length?`얼굴 ${faces.length}명 추적 중`:'지금 장면에서는 얼굴이 안 보여요 · 재생하면 계속 찾아요', faces.length?'ok':'busy');
+    afterFaces();
+    if(video.paused&&!exporting) schedule('warp');
+  }catch(err){ console.error(err); }
+  detBusy=false;
+}
+function smoothFaces(prev,next){
+  return next.map(n=>{
+    const c=v2(n.box.x+n.box.width/2,n.box.y+n.box.height/2);
+    let best=null, bd=1e9;
+    for(const p of prev){ const d=dist(c,v2(p.box.x+p.box.width/2,p.box.y+p.box.height/2)); if(d<bd){bd=d;best=p;} }
+    if(!best||bd>n.box.width*0.6) return n;
+    const fw=n.box.width;
+    let move=0; for(let i=0;i<68;i++) move+=dist(n.pts[i],best.pts[i]); move/=68;
+    const a=Math.min(1,0.4+move/fw*10);
+    return { pts:n.pts.map((p,i)=>v2(best.pts[i].x+(p.x-best.pts[i].x)*a, best.pts[i].y+(p.y-best.pts[i].y)*a)), box:n.box };
+  });
+}
+async function trackLoop(){
+  const gen=videoGen;
+  while(mode==='video'&&gen===videoGen){
+    if(!video.paused||exporting) await detectVideoFrame();
+    else await new Promise(r=>setTimeout(r,150));
+    await new Promise(r=>setTimeout(r,0));
+  }
+}
+
+function updateFaceUI(){
+  const has=faces.length>0 || mode==='video';
+  for(const g of ['face','skin']) for(const s of SLIDERS[g]){ $(`${g}-${s.k}`).disabled=!has; $(`row-${g}-${s.k}`).classList.toggle('off',!has); }
+  $('autoBtn').disabled=!has; $('maskToggle').disabled=!has; $('ptsBtn').disabled=!has;
+  $('faceNote').hidden=has;
+  if(!has) $('faceNote').textContent = mode ? '이 사진에서는 얼굴을 찾지 못했어요. 정면에 가깝고 얼굴이 잘 보이는 사진에서 가장 잘 작동해요.' : '사진이나 영상을 열면 얼굴을 찾아 이 도구들이 켜져요.';
+}
+updateFaceUI();
+
+$('autoBtn').addEventListener('click',()=>{
+  for(const [k,v] of Object.entries(AUTO.face)) setSlider('face',k,v);
+  for(const [k,v] of Object.entries(AUTO.skin)) setSlider('skin',k,v);
+  toast('자동 보정을 적용했어요. 슬라이더로 다듬어 보세요.');
+});
+
+/* ---------- Opening media ---------- */
+function prepareSurface(w,h){
+  const s=Math.min(1,(mode==='video'?MAX_VIDEO:MAX_TEX)/Math.max(w,h));
+  W=Math.max(2,Math.round(w*s/2)*2); H=Math.max(2,Math.round(h*s/2)*2);
+  work.width=W; work.height=H; origc.width=W; origc.height=H; glc.width=W; glc.height=H;
+  for(const t of [imgTex,warpTex]) if(t) gl.deleteTexture(t);
+  if(warpFbo) gl.deleteFramebuffer(warpFbo);
+  imgTex=tex(W,H,null); warpTex=tex(W,H,null); warpFbo=fbo(warpTex);
+  faces=[]; buildMask(); needWarp=true;
+  empty.hidden=true; frame.classList.add('on');
+  $('cmpBtn').disabled=false; $('saveBtn').disabled=false;
+  $('dims').hidden=false;
+  stage.classList.add('has-media'); stage.style.setProperty('--ar', (W/H).toFixed(4));
+}
+function loadFile(file){
+  if(!file) return;
+  if(file.type.startsWith('image/')) return openPhoto(file);
+  if(file.type.startsWith('video/')) return openVideo(file);
+  toast('사진이나 영상 파일만 열 수 있어요.');
+}
+let photoURL=null, videoURL=null;
+function openPhoto(file){
+  if(!gl) return;
+  stopVideo();
+  if(photoURL) URL.revokeObjectURL(photoURL);
+  photoURL=URL.createObjectURL(file);
+  const im=new Image();
+  im.onload=()=>{
+    mode='photo';
+    prepareSurface(im.naturalWidth,im.naturalHeight);
+    workCtx.drawImage(im,0,0,W,H); updateTex(imgTex,work);
+    origc.getContext('2d').drawImage(work,0,0);
+    $('dims').textContent=`사진 · ${W} × ${H}px`;
+    $('saveLabel').textContent='사진 저장';
+    $('vbar').hidden=true;
+    fit(); render(); updateFaceUI(); detectPhoto();
+  };
+  im.onerror=()=>toast('이 이미지를 읽지 못했어요. JPG나 PNG로 다시 시도해 주세요.');
+  im.src=photoURL;
+}
+function stopVideo(){
+  if(mode==='video'){ video.pause(); }
+  mode=null;
+}
+function openVideo(file){
+  if(!gl) return;
+  stopVideo();
+  if(videoURL) URL.revokeObjectURL(videoURL);
+  videoURL=URL.createObjectURL(file);
+  video.src=videoURL; video.loop=true;
+  setChip('영상 불러오는 중','busy');
+  video.onloadeddata=async()=>{
+    video.onloadeddata=null;
+    mode='video';
+    prepareSurface(video.videoWidth,video.videoHeight);
+    $('dims').textContent=`영상 · ${W} × ${H}px · ${fmt(video.duration)}`;
+    $('saveLabel').textContent='영상 저장';
+    $('vbar').hidden=false;
+    fit(); updateFaceUI();
+    try{ video.currentTime=Math.min(0.1,video.duration/2); await once(video,'seeked'); }catch(e){}
+    pullFrame();
+    setChip('얼굴 찾는 중','busy');
+    await detectVideoFrame();
+    setChip(faces.length?`얼굴 ${faces.length}명 추적 중`:'지금 장면에서는 얼굴이 안 보여요 · 재생하면 계속 찾아요', faces.length?'ok':'busy');
+    renderThumbs(thumbFromWork());
+    render(); updateTime();
+    frameLoop(); trackLoop();
+    if(video.duration>180) toast('영상 저장은 영상 길이만큼 시간이 걸려요.');
+  };
+  video.onerror=()=>{ setChip('이 영상 형식은 브라우저에서 열 수 없어요','err'); toast('MP4(H.264)나 WebM 영상으로 다시 시도해 주세요.'); };
+}
+function once(el,ev){ return new Promise(r=>el.addEventListener(ev,r,{once:true})); }
+function pullFrame(){
+  workCtx.drawImage(video,0,0,W,H);
+  updateTex(imgTex,work);
+  if(state.compare) origc.getContext('2d').drawImage(work,0,0);
+  needWarp=true;
+}
+let videoGen=0;
+function frameLoop(){
+  const gen=++videoGen;
+  const alive=()=>mode==='video'&&gen===videoGen;
+  const tick=()=>{ pullFrame(); render(); updateTime(); if(state.showPts) drawPoints(); };
+  if(video.requestVideoFrameCallback){
+    video.requestVideoFrameCallback(function vf(){ if(!alive()) return; tick(); video.requestVideoFrameCallback(vf); });
+  } else {
+    requestAnimationFrame(function raf(){ if(!alive()) return; if(!video.paused) tick(); requestAnimationFrame(raf); });
+  }
+}
+
+/* Video controls */
+const playBtn=$('playBtn'), seek=$('seek');
+const ICON_PLAY='<path d="M8 5.5v13l10.5-6.5z"/>', ICON_PAUSE='<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>';
+function fmt(t){ if(!isFinite(t)) return '0:00'; const m=Math.floor(t/60), s=Math.floor(t%60); return `${m}:${String(s).padStart(2,'0')}`; }
+function updateTime(){
+  if(mode!=='video') return;
+  $('time').textContent=`${fmt(video.currentTime)} / ${fmt(video.duration)}`;
+  if(!seeking){ seek.value=Math.round(video.currentTime/(video.duration||1)*1000); paintRange(seek); }
+}
+let seeking=false;
+playBtn.addEventListener('click',async()=>{
+  if(mode!=='video'||exporting) return;
+  ensureAudio();
+  if(video.paused){ try{ await video.play(); }catch(e){ toast('재생을 시작하지 못했어요. 다시 눌러 주세요.'); } }
+  else video.pause();
+});
+video.addEventListener('timeupdate',updateTime);
+video.addEventListener('play',()=>{ $('playIcon').innerHTML=ICON_PAUSE; playBtn.setAttribute('aria-label','일시정지'); });
+video.addEventListener('pause',()=>{ $('playIcon').innerHTML=ICON_PLAY; playBtn.setAttribute('aria-label','재생'); });
+video.addEventListener('seeked',async()=>{ if(mode!=='video'||exporting) return; pullFrame(); render(); updateTime(); if(video.paused){ await detectVideoFrame(); render(); } });
+seek.addEventListener('input',()=>{ seeking=true; paintRange(seek); if(mode==='video') video.currentTime=(+seek.value/1000)*(video.duration||0); });
+seek.addEventListener('change',()=>{ seeking=false; });
+paintRange(seek);
+
+/* Audio routing so exports keep the soundtrack */
+let audioCtx=null, audioDest=null;
+function ensureAudio(){
+  if(audioCtx){ if(audioCtx.state==='suspended') audioCtx.resume(); return; }
+  try{
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const src=audioCtx.createMediaElementSource(video);
+    audioDest=audioCtx.createMediaStreamDestination();
+    src.connect(audioCtx.destination); src.connect(audioDest);
+  }catch(e){ console.warn('audio routing unavailable',e); audioCtx=null; audioDest=null; }
+}
+
+/* Drag, drop, paste, open */
+const fileInput=$('file');
+function pick(accept){ fileInput.accept=accept; fileInput.click(); }
+$('openBtn').addEventListener('click',()=>pick('image/*,video/*'));
+$('openPhoto').addEventListener('click',()=>pick('image/*'));
+$('openVideo').addEventListener('click',()=>pick('video/*'));
+fileInput.addEventListener('change',e=>{ loadFile(e.target.files[0]); e.target.value=''; });
+['dragenter','dragover'].forEach(ev=>stage.addEventListener(ev,e=>{ e.preventDefault(); stage.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev=>stage.addEventListener(ev,e=>{ e.preventDefault(); stage.classList.remove('drag'); }));
+stage.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
+window.addEventListener('paste',e=>{ const it=[...(e.clipboardData?.items||[])].find(i=>i.type.startsWith('image/')||i.type.startsWith('video/')); if(it) loadFile(it.getAsFile()); });
+
+/* ---------- Fit, compare, points ---------- */
+function fit(){
+  if(!W) return;
+  const r=stage.getBoundingClientRect();
+  const pad=r.width<500?12:28;
+  const s=Math.min((r.width-pad*2)/W,(r.height-pad*2)/H);
+  frame.style.width=Math.max(1,W*s)+'px'; frame.style.height=Math.max(1,H*s)+'px';
+  drawPoints();
+}
+new ResizeObserver(fit).observe(stage);
+function setSplit(pct){
+  state.split=Math.max(0,Math.min(100,pct));
+  origc.style.clipPath=`inset(0 ${100-state.split}% 0 0)`;
+  $('divider').style.left=state.split+'%';
+}
+setSplit(50);
+$('cmpBtn').addEventListener('click',()=>{
+  state.compare=!state.compare;
+  $('cmpBtn').setAttribute('aria-pressed',state.compare);
+  frame.classList.toggle('compare',state.compare);
+  if(state.compare) origc.getContext('2d').drawImage(work,0,0);
+});
+let dragging=false;
+frame.addEventListener('pointerdown',e=>{ if(!state.compare) return; dragging=true; frame.setPointerCapture(e.pointerId); moveSplit(e); });
+frame.addEventListener('pointermove',e=>{ if(dragging) moveSplit(e); });
+frame.addEventListener('pointerup',()=>dragging=false);
+frame.addEventListener('pointercancel',()=>dragging=false);
+function moveSplit(e){ const r=frame.getBoundingClientRect(); setSplit((e.clientX-r.left)/r.width*100); }
+
+$('ptsBtn').addEventListener('click',()=>{ state.showPts=!state.showPts; $('ptsBtn').setAttribute('aria-pressed',state.showPts); drawPoints(); });
+function drawPoints(){
+  const r=frame.getBoundingClientRect(); const dpr=window.devicePixelRatio||1;
+  const cw=Math.max(1,Math.round(r.width*dpr)), ch=Math.max(1,Math.round(r.height*dpr));
+  if(ptsc.width!==cw||ptsc.height!==ch){ ptsc.width=cw; ptsc.height=ch; }
+  const x=ptsc.getContext('2d'); x.clearRect(0,0,cw,ch);
+  if(!state.showPts||!faces.length||!W) return;
+  const s=cw/W;
+  const groups=[[0,17,false],[17,22,false],[22,27,false],[27,31,false],[31,36,false],[36,42,true],[42,48,true],[48,60,true],[60,68,true]];
+  for(const f of faces){
+    x.strokeStyle='rgba(255,255,255,.7)'; x.lineWidth=1*dpr;
+    for(const [a,b,closed] of groups){ x.beginPath(); for(let i=a;i<b;i++){ const p=f.pts[i]; i===a?x.moveTo(p.x*s,p.y*s):x.lineTo(p.x*s,p.y*s);} if(closed) x.closePath(); x.stroke(); }
+    x.fillStyle='#ef86a7';
+    for(const p of f.pts){ x.beginPath(); x.arc(p.x*s,p.y*s,2.3*dpr,0,Math.PI*2); x.fill(); }
+  }
+}
+
+/* ---------- Reset ---------- */
+$('resetBtn').addEventListener('click',()=>{
+  for(const g of ['face','skin','adj']) for(const s of SLIDERS[g]) setSlider(g,s.k,0);
+  intensity.value=80; intensity.dispatchEvent(new Event('input'));
+  selectFilm('N0');
+  $('maskToggle').checked=false; state.showMask=false; schedule('final');
+});
+
+/* ---------- Save photo / export video ---------- */
+async function getDownloads(){ try{ return window.claude?.use ? await window.claude.use('downloads') : null; }catch(e){ return null; } }
+const isNativeApp = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+function blobToBase64(blob){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]); r.onerror=rej; r.readAsDataURL(blob); }); }
+async function saveNative(blob,filename){
+  // iOS app: write to the app cache in chunks, then open the share sheet ("이미지 저장" / "동영상 저장")
+  const FS=window.Capacitor.registerPlugin('Filesystem'), Share=window.Capacitor.registerPlugin('Share');
+  const CHUNK=3*1024*1024;
+  for(let off=0; off<blob.size; off+=CHUNK){
+    const data=await blobToBase64(blob.slice(off,off+CHUNK));
+    if(off===0) await FS.writeFile({path:filename,data,directory:'CACHE'});
+    else await FS.appendFile({path:filename,data,directory:'CACHE'});
+  }
+  const {uri}=await FS.getUri({path:filename,directory:'CACHE'});
+  await Share.share({files:[uri]});
+}
+async function offerFile(blob,filename,kind){
+  const done = kind==='video'?'영상을 저장했어요.':'사진을 저장했어요.';
+  const d=await getDownloads();
+  if(d){
+    try{ await d.save({filename,data:blob}); toast(done); return; }
+    catch(e){ if(e?.code==='declined') return; if(e?.code==='rate_limited'){ toast('저장 창이 이미 열려 있어요.'); return; } }
+  }
+  if(isNativeApp){
+    try{ await saveNative(blob,filename); return; }
+    catch(e){ if(/cancel/i.test(String(e?.message||e))) return; console.error(e); }
+  }
+  const file=new File([blob],filename,{type:blob.type});
+  const touch=matchMedia('(pointer:coarse)').matches;
+  if(touch && navigator.canShare && navigator.canShare({files:[file]})){
+    try{ await navigator.share({files:[file]}); return; }
+    catch(e){ if(e?.name==='AbortError') return; }
+  }
+  if(!window.claude){
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),60000); toast(done); return;
+  }
+  showSaveModal(blob,kind);
+}
+const today=()=>new Date().toISOString().slice(0,10);
+$('saveBtn').addEventListener('click',async()=>{
+  if(!mode||exporting) return;
+  if(mode==='video') return exportVideo();
+  const wasMask=state.showMask; state.showMask=false; render();
+  const blob=await new Promise(r=>glc.toBlob(r,'image/jpeg',0.93));
+  state.showMask=wasMask; render();
+  if(!blob){ toast('이미지를 만들지 못했어요. 다시 시도해 주세요.'); return; }
+  offerFile(blob,`joyfilter-${today()}.jpg`,'photo');
+});
+
+let exporting=false, cancelRequested=false;
+async function exportVideo(){
+  if(typeof MediaRecorder==='undefined'||!glc.captureStream){ toast('이 브라우저는 영상 저장을 지원하지 않아요. 최신 Chrome이나 Safari에서 열어 주세요.'); return; }
+  const types=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+  const mime=types.find(t=>MediaRecorder.isTypeSupported(t));
+  if(!mime){ toast('이 브라우저에서 쓸 수 있는 영상 형식이 없어요.'); return; }
+  ensureAudio();
+  exporting=true; cancelRequested=false;
+  const ui=$('exportUi'); ui.hidden=false; setExport(0);
+  [playBtn,seek,$('saveBtn'),$('openBtn')].forEach(b=>b.disabled=true);
+  const wasLoop=video.loop; video.loop=false; video.pause();
+  const stream=glc.captureStream(30);
+  if(audioDest){ const at=audioDest.stream.getAudioTracks()[0]; if(at) stream.addTrack(at); }
+  const rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:Math.round(Math.min(12e6,W*H*30*0.15))});
+  const chunks=[]; rec.ondataavailable=e=>{ if(e.data&&e.data.size) chunks.push(e.data); };
+  try{
+    video.currentTime=0; await once(video,'seeked');
+    pullFrame(); await detectVideoFrame(); render();
+    rec.start(500);
+    await video.play();
+    await new Promise(res=>{
+      const tick=()=>{ if(cancelRequested||video.ended){ res(); return; } setExport(video.currentTime/(video.duration||1)); setTimeout(tick,200); };
+      video.addEventListener('ended',res,{once:true}); tick();
+    });
+    video.pause();
+    const stopped=once(rec,'stop'); rec.stop(); await stopped;
+  }catch(e){ console.error(e); try{ rec.state!=='inactive'&&rec.stop(); }catch(_){} }
+  stream.getVideoTracks().forEach(t=>t.stop());
+  video.loop=wasLoop; exporting=false; ui.hidden=true;
+  [playBtn,seek,$('saveBtn'),$('openBtn')].forEach(b=>b.disabled=false);
+  render();
+  if(cancelRequested){ toast('영상 저장을 취소했어요.'); return; }
+  if(!chunks.length){ toast('영상을 만들지 못했어요. 다시 시도해 주세요.'); return; }
+  const blob=new Blob(chunks,{type:mime.split(';')[0]});
+  offerFile(blob,`joyfilter-${today()}.${mime.includes('mp4')?'mp4':'webm'}`,'video');
+}
+function setExport(p){ const pct=Math.round(p*100); $('exportText').textContent=`영상 만드는 중 ${pct}%`; $('exportBar').style.width=pct+'%'; }
+$('cancelExport').addEventListener('click',()=>{ cancelRequested=true; });
+
+function showSaveModal(blob,kind){
+  const url=URL.createObjectURL(blob);
+  const m=document.createElement('div'); m.className='modal';
+  const media = kind==='video' ? `<video src="${url}" controls playsinline></video>` : `<img alt="보정한 사진" src="${url}">`;
+  m.innerHTML=`<div class="modal-card" role="dialog" aria-label="보정 결과">${media}<p>이 화면에서는 바로 내려받을 수 없어요. 결과를 길게 누르거나 마우스 오른쪽 버튼으로 눌러 저장하세요.</p><button class="btn" type="button">닫기</button></div>`;
+  const close=()=>{ m.remove(); URL.revokeObjectURL(url); };
+  m.querySelector('button').onclick=close;
+  m.addEventListener('click',e=>{ if(e.target===m) close(); });
+  document.body.appendChild(m);
+}
+
+let toastT;
+function toast(msg){
+  document.querySelector('.toast')?.remove();
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg; t.setAttribute('role','status');
+  document.body.appendChild(t); clearTimeout(toastT); toastT=setTimeout(()=>t.remove(),2800);
+}
+if('serviceWorker' in navigator && location.protocol==='https:' && !isNativeApp && !window.claude){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+})();
+</script>
+
+</body>
+</html>

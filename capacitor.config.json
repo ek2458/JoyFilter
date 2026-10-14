@@ -1,0 +1,12 @@
+{
+  "appId": "com.joyfilter.app",
+  "appName": "JoyFilter",
+  "webDir": "web",
+  "backgroundColor": "#fbf6f3",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#fbf6f3",
+    "allowsLinkPreview": false,
+    "scrollEnabled": true
+  }
+}

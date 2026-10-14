@@ -1,0 +1,16 @@
+{
+  "name": "JoyFilter",
+  "short_name": "JoyFilter",
+  "description": "사진과 영상 속 얼굴을 기기 안에서 보정하고 필름 감성 필터를 입히는 편집 도구",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf6f3",
+  "theme_color": "#fbf6f3",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
