@@ -66,6 +66,9 @@ window.JF_I18N = {
     'modal.close': '닫기',
     'm.more': '더보기', 'm.openNew': '다른 사진·영상 열기', 'm.compareSplit': '원본과 나란히 비교', 'm.points': '얼굴 인식 포인트 보기',
     'm.auto': '자동', 'm.mask': '보정 영역', 'm.needFace': '얼굴이 인식되면 쓸 수 있어요', 'm.hold': '사진을 길게 누르면 원본이 보여요',
+    'load.import': '사진 보관함에서 가져오는 중', 'load.photo': '사진 여는 중', 'load.video': '영상 여는 중',
+    'load.preparing': '얼굴 인식 준비 중', 'load.firstTime': '처음 한 번만 몇 초 걸려요', 'load.wait': '잠시만 기다려 주세요',
+    'load.longVideo': '긴 영상은 조금 더 걸릴 수 있어요',
     'webgl.none': '이 브라우저에서는 WebGL을 쓸 수 없어요'
   },
 
@@ -135,6 +138,9 @@ window.JF_I18N = {
     'modal.close': 'Close',
     'm.more': 'More', 'm.openNew': 'Open another photo or video', 'm.compareSplit': 'Side-by-side compare', 'm.points': 'Show face points',
     'm.auto': 'Auto', 'm.mask': 'Retouch area', 'm.needFace': 'Available once a face is detected', 'm.hold': 'Press and hold the photo to see the original',
+    'load.import': 'Getting it from your library', 'load.photo': 'Opening photo', 'load.video': 'Opening video',
+    'load.preparing': 'Getting face detection ready', 'load.firstTime': 'This takes a few seconds the first time only', 'load.wait': 'Just a moment',
+    'load.longVideo': 'Long videos can take a little longer',
     'webgl.none': "WebGL isn't available in this browser"
   },
 
@@ -204,6 +210,9 @@ window.JF_I18N = {
     'modal.close': '閉じる',
     'm.more': 'その他', 'm.openNew': '別の写真・動画を開く', 'm.compareSplit': '元の画像と並べて比較', 'm.points': '顔のポイントを表示',
     'm.auto': '自動', 'm.mask': '補正範囲', 'm.needFace': '顔が検出されると使えます', 'm.hold': '写真を長押しすると元の画像が見られます',
+    'load.import': 'ライブラリから読み込み中', 'load.photo': '写真を開いています', 'load.video': '動画を開いています',
+    'load.preparing': '顔検出を準備中', 'load.firstTime': '初回だけ数秒かかります', 'load.wait': '少々お待ちください',
+    'load.longVideo': '長い動画は少し時間がかかります',
     'webgl.none': 'このブラウザではWebGLを使えません'
   }
 };
