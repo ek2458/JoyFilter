@@ -84,7 +84,7 @@ window.JF_I18N = {
     'hdr.reset': 'Reset', 'hdr.resetTitle': 'Reset all edits',
     'hdr.lang': 'Language',
     'save.default': 'Save', 'save.photo': 'Save photo', 'save.video': 'Save video',
-    'empty.headline': 'A little more<br><em>you, today</em>',
+    'empty.headline': 'You look<br><em>so lovely</em>',
     'empty.body': 'Drag in, paste, or open a portrait photo or video. JoyFilter finds faces automatically and sets the retouch points for you.',
     'empty.openPhoto': 'Open photo', 'empty.openVideo': 'Open video',
     'feat.face': 'Face detection', 'feat.skin': 'Skin texture', 'feat.film': 'Film filters', 'feat.video': 'Video retouch',
