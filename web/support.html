@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JoyFilter Support</title>
+<meta name="description" content="JoyFilter support: contact, frequently asked questions and tips.">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<style>
+:root{--bg:#fbf6f3;--card:#fff;--ink:#463f62;--muted:#8b85a3;--line:#efe7ec;--lav:#8e93d1;--lav-ink:#6a6eb6;--pink:#ef86a7;--pink-ink:#d45e88;--lav-soft:#ebe8f8;--pink-soft:#fce4ee;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif}
+main{max-width:720px;margin:0 auto;padding-block:max(28px, env(safe-area-inset-top, 0px)) 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+a{color:var(--lav-ink)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:"Fredoka",system-ui,sans-serif;font-weight:600;font-size:24px;color:var(--lav)}
+.brand img{width:36px;height:36px;border-radius:10px;box-shadow:0 2px 6px -2px rgba(70,63,98,.35)}
+.brand em{font-style:normal;color:var(--pink)}
+.lang{display:flex;gap:2px;padding:3px;background:var(--lav-soft);border-radius:999px}
+.lang button{border:0;background:none;height:32px;padding:0 11px;border-radius:999px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--lav-ink)}
+.lang button[aria-pressed="true"]{background:var(--card);color:var(--pink-ink);font-weight:700;box-shadow:0 2px 6px -2px rgba(70,63,98,.2)}
+h1{font-family:"Jua",system-ui,sans-serif;font-weight:400;font-size:30px;line-height:1.25;margin:18px 0 4px;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 22px;max-width:60ch}
+section{background:var(--card);border-radius:20px;padding:20px 22px;margin-bottom:14px;box-shadow:0 8px 24px -16px rgba(70,63,98,.25)}
+h2{font-family:"Poppins",system-ui,sans-serif;font-weight:600;font-size:11px;letter-spacing:.2em;color:var(--lav-ink);margin:0 0 10px;text-transform:uppercase}
+p{margin:0 0 8px;max-width:65ch}
+p:last-child{margin-bottom:0}
+.contact{background:var(--lav-soft)}
+.mail{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+.mail code{font:600 16px/1.4 -apple-system,system-ui,sans-serif;color:var(--ink);background:var(--card);padding:10px 14px;border-radius:12px;user-select:all;-webkit-user-select:all;word-break:break-all}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:42px;padding:0 16px;border-radius:999px;border:0;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;line-height:1;text-decoration:none}
+.btn.primary{background:var(--pink-ink);color:#fff}
+.btn.soft{background:var(--card);color:var(--lav-ink);border:1.5px solid var(--lav)}
+.btn svg{width:16px;height:16px}
+.small{font-size:13px;color:var(--muted)}
+details{border-top:1px solid var(--line);padding:12px 0}
+details:first-of-type{border-top:0;padding-top:2px}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--pink);font-weight:700;font-size:18px;line-height:1.2;flex:none}
+details[open] summary::after{content:"–"}
+details p{margin:8px 0 0;color:var(--ink)}
+.foot{text-align:center;font-size:13px;color:var(--muted);margin-top:22px}
+:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+:root:lang(ja) body{font-family:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+:root:lang(ja) h1{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;font-weight:700}
+:root:lang(en) h1{font-family:"Fredoka",system-ui,sans-serif;font-weight:600}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <a class="brand" href="./"><img src="icons/icon-192.png" alt="" width="36" height="36"><span>Joy<em>Filter</em></span></a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="ko" lang="ko">한국어</button>
+      <button type="button" data-lang="en" lang="en">English</button>
+      <button type="button" data-lang="ja" lang="ja">日本語</button>
+    </div>
+  </div>
+
+  <!-- 한국어 -->
+  <article data-doc="ko" lang="ko">
+    <h1>도움말 및 문의</h1>
+    <p class="lead">JoyFilter를 쓰다가 궁금한 점이나 불편한 점이 있으면 언제든 알려 주세요.</p>
+    <section class="contact">
+      <h2>문의하기</h2>
+      <p>아래 이메일로 보내 주시면 확인 후 답장드릴게요. 문제가 생긴 화면의 스크린샷과 기기 모델, iOS 버전을 함께 적어 주시면 더 빨리 도와드릴 수 있어요.</p>
+      <div class="mail"><code>joyflash.info@gmail.com</code></div>
+      <div class="mail">
+        <a class="btn primary" href="mailto:joyflash.info@gmail.com?subject=JoyFilter%20%EB%AC%B8%EC%9D%98"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg>메일 보내기</a>
+        <button class="btn soft copy" type="button" data-done="복사했어요"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>주소 복사</span></button>
+      </div>
+      <p class="small">메일 앱이 열리지 않으면 주소를 복사해서 보내 주세요.</p>
+    </section>
+    <section>
+      <h2>자주 묻는 질문</h2>
+      <details><summary>보정한 사진이나 영상은 어떻게 저장하나요?</summary>
+        <p>오른쪽 위 <b>저장</b>을 누르면 공유 창이 열려요. 사진은 <b>이미지 저장</b>, 영상은 <b>비디오 저장</b>을 누르면 사진 앱에 저장돼요.</p></details>
+      <details><summary>얼굴이 인식되지 않아요.</summary>
+        <p>정면에 가깝고 얼굴이 크게, 밝게 나온 사진에서 가장 잘 인식돼요. 옆모습, 아주 작게 나온 얼굴, 마스크나 손으로 가린 얼굴은 인식이 어려울 수 있어요. 얼굴이 인식되지 않아도 필터와 조정 기능은 그대로 쓸 수 있어요.</p></details>
+      <details><summary>처음 사진을 열 때 시간이 걸려요.</summary>
+        <p>앱을 처음 켰을 때 얼굴 인식을 준비하느라 몇 초 걸릴 수 있어요. 한 번 준비되면 그다음부터는 빠르게 열려요. 큰 영상은 사진 보관함에서 가져오는 데 시간이 더 걸릴 수 있어요.</p></details>
+      <details><summary>영상 저장이 오래 걸려요.</summary>
+        <p>영상은 처음부터 끝까지 재생하면서 보정을 입혀 저장하기 때문에 영상 길이만큼 시간이 걸려요. 저장하는 동안 앱을 닫거나 다른 앱으로 넘어가지 말아 주세요.</p></details>
+      <details><summary>보정 전 원본과 비교하고 싶어요.</summary>
+        <p>사진을 길게 누르고 있으면 원본이 보이고, 손을 떼면 보정된 사진으로 돌아가요. <b>⋯</b> 메뉴의 <b>원본과 나란히 비교</b>를 누르면 좌우로 나눠서 볼 수도 있어요.</p></details>
+      <details><summary>언어를 바꾸고 싶어요.</summary>
+        <p>화면 위쪽 지구본 버튼(KO, EN, JA)을 누르면 한국어, 영어, 일본어 중에서 고를 수 있어요.</p></details>
+      <details><summary>사진이 서버로 전송되나요?</summary>
+        <p>아니요. 얼굴 인식과 보정은 모두 기기 안에서 이뤄지고, 사진과 영상은 어디에도 업로드되지 않아요. 회원가입이나 로그인도 없어요. 자세한 내용은 <a href="privacy.html">개인정보 처리방침</a>을 확인해 주세요.</p></details>
+      <details><summary>사진 보관함에 접근할 수 없다고 나와요.</summary>
+        <p>iPhone <b>설정 → JoyFilter → 사진</b>에서 접근 권한을 <b>전체 접근</b> 또는 <b>선택한 사진</b>으로 바꿔 주세요.</p></details>
+    </section>
+    <p class="foot"><a href="privacy.html">개인정보 처리방침</a> · <a href="./">JoyFilter 열기</a></p>
+  </article>
+
+  <!-- English -->
+  <article data-doc="en" lang="en" hidden>
+    <h1>Help &amp; Support</h1>
+    <p class="lead">If you have a question or something isn't working as expected, we'd love to hear from you.</p>
+    <section class="contact">
+      <h2>Contact us</h2>
+      <p>Send us an email and we'll get back to you. Including a screenshot of the issue, your device model, and your iOS version helps us help you faster.</p>
+      <div class="mail"><code>joyflash.info@gmail.com</code></div>
+      <div class="mail">
+        <a class="btn primary" href="mailto:joyflash.info@gmail.com?subject=JoyFilter%20support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg>Send email</a>
+        <button class="btn soft copy" type="button" data-done="Copied"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copy address</span></button>
+      </div>
+      <p class="small">If your mail app doesn't open, copy the address and email us from any app.</p>
+    </section>
+    <section>
+      <h2>Frequently asked questions</h2>
+      <details><summary>How do I save my edited photo or video?</summary>
+        <p>Tap <b>Save</b> in the top right to open the share sheet, then choose <b>Save Image</b> for photos or <b>Save Video</b> for videos. It goes straight to your Photos app.</p></details>
+      <details><summary>My face isn't being detected.</summary>
+        <p>Detection works best with a clear, well-lit, mostly front-facing face. Profiles, very small faces, or faces covered by a mask or hand can be hard to detect. Filters and adjustments still work without a detected face.</p></details>
+      <details><summary>The first photo takes a while to open.</summary>
+        <p>Right after launch, JoyFilter gets face detection ready, which can take a few seconds. After that, photos open quickly. Large videos can also take longer to import from your library.</p></details>
+      <details><summary>Saving a video takes a long time.</summary>
+        <p>Videos are played from start to finish while the retouch is applied, so saving takes about as long as the video itself. Please keep the app open until it finishes.</p></details>
+      <details><summary>How do I compare with the original?</summary>
+        <p>Press and hold the photo to see the original, then let go to see your edit. You can also open the <b>⋯</b> menu and choose <b>Side-by-side compare</b>.</p></details>
+      <details><summary>How do I change the language?</summary>
+        <p>Tap the globe button (KO, EN, JA) at the top of the screen to choose English, Korean, or Japanese.</p></details>
+      <details><summary>Are my photos sent to a server?</summary>
+        <p>No. Face detection and editing happen entirely on your device, and photos and videos are never uploaded. There are no accounts. See our <a href="privacy.html">Privacy Policy</a> for details.</p></details>
+      <details><summary>It says JoyFilter can't access my photos.</summary>
+        <p>Go to <b>Settings → JoyFilter → Photos</b> on your iPhone and choose <b>Full Access</b> or <b>Limited Access</b>.</p></details>
+    </section>
+    <p class="foot"><a href="privacy.html">Privacy Policy</a> · <a href="./">Open JoyFilter</a></p>
+  </article>
+
+  <!-- 日本語 -->
+  <article data-doc="ja" lang="ja" hidden>
+    <h1>ヘルプとお問い合わせ</h1>
+    <p class="lead">JoyFilterについてのご質問や不具合があれば、お気軽にお知らせください。</p>
+    <section class="contact">
+      <h2>お問い合わせ</h2>
+      <p>下記のメールアドレスまでお送りください。確認のうえご返信します。問題が起きた画面のスクリーンショット、端末のモデル、iOSのバージョンを添えていただくと、より早く対応できます。</p>
+      <div class="mail"><code>joyflash.info@gmail.com</code></div>
+      <div class="mail">
+        <a class="btn primary" href="mailto:joyflash.info@gmail.com?subject=JoyFilter%20%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg>メールを送る</a>
+        <button class="btn soft copy" type="button" data-done="コピーしました"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>アドレスをコピー</span></button>
+      </div>
+      <p class="small">メールアプリが開かない場合は、アドレスをコピーしてお送りください。</p>
+    </section>
+    <section>
+      <h2>よくある質問</h2>
+      <details><summary>補正した写真や動画はどうやって保存しますか？</summary>
+        <p>右上の<b>保存</b>をタップすると共有画面が開きます。写真は<b>画像を保存</b>、動画は<b>ビデオを保存</b>を選ぶと写真アプリに保存されます。</p></details>
+      <details><summary>顔が検出されません。</summary>
+        <p>正面に近く、顔が大きく明るく写った写真で最もよく検出されます。横顔や小さく写った顔、マスクや手で隠れた顔は検出が難しい場合があります。顔が検出されなくても、フィルターと調整はそのまま使えます。</p></details>
+      <details><summary>最初の写真を開くのに時間がかかります。</summary>
+        <p>起動直後は顔検出の準備に数秒かかることがあります。一度準備ができれば、その後はすぐに開きます。大きな動画はライブラリからの読み込みに時間がかかることがあります。</p></details>
+      <details><summary>動画の保存に時間がかかります。</summary>
+        <p>動画は最初から最後まで再生しながら補正をかけて保存するため、動画の長さと同じくらいの時間がかかります。保存が終わるまでアプリを閉じないでください。</p></details>
+      <details><summary>元の画像と比較したいです。</summary>
+        <p>写真を長押しすると元の画像が表示され、指を離すと補正後に戻ります。<b>⋯</b>メニューの<b>元の画像と並べて比較</b>で左右に並べて見ることもできます。</p></details>
+      <details><summary>言語を変更したいです。</summary>
+        <p>画面上部の地球儀ボタン（KO、EN、JA）をタップすると、日本語、英語、韓国語から選べます。</p></details>
+      <details><summary>写真がサーバーに送られますか？</summary>
+        <p>いいえ。顔検出と補正はすべて端末の中で行われ、写真や動画がアップロードされることはありません。会員登録もありません。詳しくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。</p></details>
+      <details><summary>写真へのアクセスができないと表示されます。</summary>
+        <p>iPhoneの<b>設定 → JoyFilter → 写真</b>で、<b>フルアクセス</b>または<b>選択した写真</b>に変更してください。</p></details>
+    </section>
+    <p class="foot"><a href="privacy.html">プライバシーポリシー</a> · <a href="./">JoyFilterを開く</a></p>
+  </article>
+</main>
+<script>
+(function(){
+  var langs=['ko','en','ja'];
+  function pick(){
+    var q=(location.hash||'').replace('#','');
+    if(langs.indexOf(q)>=0) return q;
+    try{ var s=localStorage.getItem('joyfilter-lang'); if(langs.indexOf(s)>=0) return s; }catch(e){}
+    var n=((navigator.languages&&navigator.languages[0])||navigator.language||'ko').slice(0,2).toLowerCase();
+    return langs.indexOf(n)>=0?n:'en';
+  }
+  function apply(l){
+    document.documentElement.lang=l;
+    document.querySelectorAll('[data-doc]').forEach(function(a){ a.hidden=a.getAttribute('data-doc')!==l; });
+    document.querySelectorAll('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-lang')===l); });
+    var h=document.querySelector('[data-doc="'+l+'"] h1'); if(h) document.title='JoyFilter · '+h.textContent;
+    try{ localStorage.setItem('joyfilter-lang',l); }catch(e){}
+  }
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click',function(){ apply(b.getAttribute('data-lang')); }); });
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var label=b.querySelector('span'), orig=label.textContent, addr='joyflash.info@gmail.com';
+      var ok=function(){ label.textContent=b.getAttribute('data-done'); setTimeout(function(){ label.textContent=orig; },1800); };
+      var fallback=function(){ var c=b.closest('section').querySelector('code'); var r=document.createRange(); r.selectNodeContents(c); var s=getSelection(); s.removeAllRanges(); s.addRange(r); };
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(addr).then(ok,fallback); } else { fallback(); }
+    });
+  });
+  apply(pick());
+})();
+</script>
+</body>
+</html>

@@ -1,11 +1,12 @@
 // Offline cache for the web version. Bump VERSION when files change.
-const VERSION = 'joyfilter-v9';
+const VERSION = 'joyfilter-v10';
 const CORE = [
   './',
   'index.html',
   'manifest.webmanifest',
   'i18n.js',
   'privacy.html',
+  'support.html',
   'fonts/fonts.css',
   'vendor/face-api.js',
   'model/ssd_mobilenetv1_model-weights_manifest.json',

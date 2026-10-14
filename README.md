@@ -27,6 +27,7 @@ web/                 앱 본체 (정적 파일, 빌드 단계 없음)
   model/             얼굴 인식 모델 가중치
   fonts/             Jua, Fredoka, Poppins (SIL OFL)
   privacy.html       개인정보 처리방침 (App Store 제출용 URL)
+  support.html       도움말 및 문의 (App Store 지원 URL, joyflash.info@gmail.com)
   sw.js              웹 버전 오프라인 캐시
 ios/                 Capacitor 8 iOS 프로젝트 (Swift Package Manager)
   App/*.lproj/       권한 안내 문구 현지화 (ko, en, ja)

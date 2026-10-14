@@ -71,6 +71,7 @@ window.JF_I18N = {
     'load.longVideo': '긴 영상은 조금 더 걸릴 수 있어요',
     'close.label': '사진 닫기', 'close.titlePhoto': '편집 중인 사진을 닫을까요?', 'close.titleVideo': '편집 중인 영상을 닫을까요?',
     'close.body': '지금까지 보정한 내용은 저장되지 않아요.', 'close.cancel': '취소', 'close.confirm': '닫기',
+    'm.support': '도움말 및 문의',
     'webgl.none': '이 브라우저에서는 WebGL을 쓸 수 없어요'
   },
 
@@ -145,6 +146,7 @@ window.JF_I18N = {
     'load.longVideo': 'Long videos can take a little longer',
     'close.label': 'Close', 'close.titlePhoto': 'Close this photo?', 'close.titleVideo': 'Close this video?',
     'close.body': "Your edits so far won't be saved.", 'close.cancel': 'Cancel', 'close.confirm': 'Close',
+    'm.support': 'Help & Support',
     'webgl.none': "WebGL isn't available in this browser"
   },
 
@@ -219,6 +221,7 @@ window.JF_I18N = {
     'load.longVideo': '長い動画は少し時間がかかります',
     'close.label': '閉じる', 'close.titlePhoto': '編集中の写真を閉じますか？', 'close.titleVideo': '編集中の動画を閉じますか？',
     'close.body': 'ここまでの補正内容は保存されません。', 'close.cancel': 'キャンセル', 'close.confirm': '閉じる',
+    'm.support': 'ヘルプとお問い合わせ',
     'webgl.none': 'このブラウザではWebGLを使えません'
   }
 };

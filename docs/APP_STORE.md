@@ -67,7 +67,8 @@ iPhone을 연결하고 ▶︎ 실행 후 아래를 확인하세요.
 | 항목 | 입력값 |
 | --- | --- |
 | 카테고리 | 사진 및 비디오 (보조: 라이프스타일) |
-| 개인정보 처리방침 URL | `https://<깃허브아이디>.github.io/joyfilter/privacy.html` |
+| 개인정보 처리방침 URL | `https://ek2458.github.io/JoyFilter/privacy.html` |
+| 지원 URL (Support URL) | `https://ek2458.github.io/JoyFilter/support.html` |
 | 연령 등급 | 모든 질문 "없음" → 4+ |
 | 가격 | 무료 |
 
