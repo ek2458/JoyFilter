@@ -100,8 +100,6 @@ header{grid-column:1 / -1;display:flex;align-items:center;gap:12px;flex-wrap:wra
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:24px;width:min(520px,100%)}
 .empty .card{width:100%;background:var(--card);border-radius:var(--r-lg);padding:30px 24px 26px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:var(--shadow);border:2px dashed transparent;transition:border-color .15s}
 .stage.drag .empty .card{border-color:var(--pink-mid)}
-.card-brand{font-family:var(--font-display);font-weight:600;font-size:30px;line-height:1;letter-spacing:-.01em;color:var(--lav);margin-bottom:-2px}
-.card-brand em{font-style:normal;color:var(--pink-mid)}
 .eyebrow{font-family:var(--font-label);font-weight:600;font-size:10.5px;letter-spacing:.22em;color:var(--pink-mid)}
 .empty h2{font-family:var(--font-head);font-weight:400;font-size:30px;line-height:1.2;margin:0;color:var(--lav);text-wrap:balance}
 .empty h2 em{font-style:normal;color:var(--pink-mid)}
@@ -432,7 +430,7 @@ input[type=range]:disabled{cursor:not-allowed}
     <div class="stage" id="stage">
       <div class="empty" id="empty">
         <div class="card">
-          <span class="card-brand" aria-label="JoyFilter">Joy<em>Filter</em></span>
+          <span class="eyebrow">JoyFilter</span>
           <h2 data-i18n-html="empty.headline">오늘의 나를<br><em>조금 더 사랑스럽게</em></h2>
           <div class="feats" aria-hidden="true">
             <div class="feat"><i style="background:var(--lav-soft);color:var(--lav-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="9.5" cy="10.5" r=".6" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".6" fill="currentColor"/><path d="M9.5 15c1.5 1.2 3.5 1.2 5 0"/></svg></i><span data-i18n="feat.face">얼굴 인식</span></div>

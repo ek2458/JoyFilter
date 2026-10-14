@@ -1,5 +1,5 @@
 // Offline cache for the web version. Bump VERSION when files change.
-const VERSION = 'joyfilter-v11';
+const VERSION = 'joyfilter-v12';
 const CORE = [
   './',
   'index.html',
